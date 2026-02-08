@@ -3,364 +3,432 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moje Čajová Sbírka 🍵</title>
+    <title>Čajovna</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
         :root {
-            --bg: #0a0a0a;
-            --card: #141414;
-            --card-hover: #1a1a1a;
-            --text: #e5e5e5;
-            --muted: #777;
-            --accent: #4ade80;
-            --green: #22c55e;
-            --black-tea: #dc2626;
-            --blend: #a855f7;
-            --border: #222;
-            --border-hover: #333;
-            --modal-bg: rgba(0,0,0,0.85);
-            --detail-bg: rgba(255,255,255,0.03);
-            --desc-text: #bbb;
-            --prep-text: #999;
+            --bg: #0c0c0c;
+            --surface: #151515;
+            --surface-hover: #1c1c1c;
+            --text: #ececec;
+            --text-secondary: #8a8a8a;
+            --accent: #7c9a6e;
+            --accent-soft: rgba(124, 154, 110, 0.12);
+            --warm: #c4956a;
+            --warm-soft: rgba(196, 149, 106, 0.12);
+            --border: rgba(255,255,255,0.06);
+            --border-hover: rgba(255,255,255,0.12);
         }
         
         [data-theme="light"] {
-            --bg: #f5f5f5;
-            --card: #ffffff;
-            --card-hover: #fafafa;
+            --bg: #faf9f7;
+            --surface: #ffffff;
+            --surface-hover: #f5f4f2;
             --text: #1a1a1a;
-            --muted: #666;
-            --border: #e0e0e0;
-            --border-hover: #ccc;
-            --modal-bg: rgba(0,0,0,0.5);
-            --detail-bg: rgba(0,0,0,0.03);
-            --desc-text: #555;
-            --prep-text: #666;
+            --text-secondary: #6b6b6b;
+            --accent: #5a7a4c;
+            --accent-soft: rgba(90, 122, 76, 0.08);
+            --warm: #a67c52;
+            --warm-soft: rgba(166, 124, 82, 0.08);
+            --border: rgba(0,0,0,0.06);
+            --border-hover: rgba(0,0,0,0.1);
         }
         
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
+            font-family: 'DM Sans', -apple-system, sans-serif;
             background: var(--bg);
             color: var(--text);
             min-height: 100vh;
             line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .noise {
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 1000;
         }
         
         .container {
-            max-width: 1100px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 60px 24px 100px;
         }
         
         header {
+            margin-bottom: 64px;
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 48px;
+        }
+        
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+        
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: transparent;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle:hover {
+            border-color: var(--border-hover);
+            transform: rotate(20deg);
+        }
+        
+        .hero {
             text-align: center;
-            margin-bottom: 50px;
         }
         
-        h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(2rem, 5vw, 3rem);
-            font-weight: 600;
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, #4ade80, #22d3ee);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: 400;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
         }
         
-        .subtitle {
-            color: var(--muted);
+        .hero h1 em {
+            font-style: italic;
+            color: var(--accent);
+        }
+        
+        .hero p {
+            color: var(--text-secondary);
             font-size: 1rem;
+            max-width: 400px;
+            margin: 0 auto;
         }
         
-        /* Homepage Grid */
+        .collection-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--accent-soft);
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 40px;
+        }
+        
         .tea-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
         }
         
         .tea-card {
-            background: var(--card);
-            border-radius: 16px;
-            padding: 24px;
+            background: var(--surface);
+            border-radius: 20px;
+            padding: 28px;
             border: 1px solid var(--border);
             cursor: pointer;
-            transition: all 0.25s ease;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tea-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--accent-soft), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
         
         .tea-card:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
             border-color: var(--border-hover);
-            background: var(--card-hover);
         }
         
-        .tea-type-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-            margin-bottom: 12px;
+        .tea-card:hover::before { opacity: 1; }
+        
+        .tea-card-inner {
+            position: relative;
+            z-index: 1;
         }
         
-        .type-green { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
-        .type-black { background: rgba(220, 38, 38, 0.15); color: #f87171; }
-        .type-blend { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
-        
-        .tea-card-name {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.35rem;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-        
-        .tea-card-origin {
-            color: var(--muted);
-            font-size: 13px;
-            margin-bottom: 16px;
-        }
-        
-        .tea-card-quick {
-            display: flex;
-            gap: 16px;
-            font-size: 14px;
-            color: var(--muted);
-        }
-        
-        .tea-card-quick span {
+        .tea-meta {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        
+        .tea-type {
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-secondary);
+            padding: 4px 10px;
+            background: var(--border);
+            border-radius: 6px;
+        }
+        
+        .tea-type.green { color: var(--accent); background: var(--accent-soft); }
+        .tea-type.black { color: var(--warm); background: var(--warm-soft); }
+        .tea-type.blend { color: #9d7cd8; background: rgba(157, 124, 216, 0.1); }
+        
+        .tea-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            font-weight: 500;
+            margin-bottom: 4px;
+            line-height: 1.2;
+        }
+        
+        .tea-origin {
+            color: var(--text-secondary);
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+        
+        .tea-quick {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .tea-stat {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        
+        .tea-stat-value {
+            font-size: 15px;
+            font-weight: 500;
+        }
+        
+        .tea-stat-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
         }
 
-        /* Detail Modal */
+        /* Modal */
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: var(--modal-bg);
-            backdrop-filter: blur(8px);
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(20px);
             z-index: 100;
             display: none;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
         
-        .modal-overlay.active { display: flex; }
+        .modal-overlay.active { display: flex; opacity: 1; }
         
         .modal {
-            background: var(--card);
-            border-radius: 24px;
-            max-width: 540px;
+            background: var(--surface);
+            border-radius: 28px;
+            max-width: 520px;
             width: 100%;
-            max-height: 90vh;
+            max-height: 85vh;
             overflow-y: auto;
             border: 1px solid var(--border);
-            animation: modalIn 0.25s ease;
+            transform: translateY(20px) scale(0.98);
+            opacity: 0;
+            animation: modalSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
         
-        @keyframes modalIn {
-            from { opacity: 0; transform: scale(0.95) translateY(10px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
+        @keyframes modalSlide {
+            to { transform: translateY(0) scale(1); opacity: 1; }
         }
         
         .modal-header {
-            padding: 28px 28px 20px;
-            border-bottom: 1px solid var(--border);
+            padding: 32px 32px 24px;
+            position: relative;
         }
         
         .modal-close {
-            float: right;
-            background: rgba(255,255,255,0.1);
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--border);
             border: none;
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            color: var(--muted);
-            font-size: 20px;
+            color: var(--text-secondary);
+            font-size: 18px;
             cursor: pointer;
             transition: all 0.2s;
         }
         
-        .modal-close:hover { background: rgba(255,255,255,0.15); color: #fff; }
+        .modal-close:hover { background: var(--border-hover); color: var(--text); }
         
         .modal-type {
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
         
         .modal-name {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            font-weight: 600;
-            line-height: 1.2;
-        }
-        
-        .modal-origin {
-            color: var(--muted);
-            margin-top: 8px;
-            font-size: 15px;
-        }
-        
-        .modal-description {
-            margin-top: 16px;
-            font-size: 15px;
-            line-height: 1.7;
-            color: var(--desc-text);
-        }
-        
-        .modal-body {
-            padding: 24px 28px 28px;
-        }
-        
-        .detail-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 14px;
-            margin-bottom: 20px;
-        }
-        
-        .detail-item {
-            background: var(--detail-bg);
-            border-radius: 12px;
-            padding: 14px;
-            text-align: center;
-        }
-        
-        .detail-icon {
-            font-size: 24px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem;
+            font-weight: 500;
+            line-height: 1.15;
             margin-bottom: 6px;
         }
         
-        .detail-value {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 3px;
+        .modal-origin {
+            color: var(--text-secondary);
+            font-size: 14px;
         }
         
-        .detail-label {
-            font-size: 11px;
-            color: var(--muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        .modal-desc {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.15rem;
+            line-height: 1.7;
+            color: var(--text);
+            font-style: italic;
         }
         
-        .detail-item.full { grid-column: span 2; }
+        .modal-body {
+            padding: 0 32px 32px;
+        }
         
-        .caffeine-indicator {
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        
+        .spec {
+            background: var(--bg);
+            border-radius: 14px;
+            padding: 16px 12px;
+            text-align: center;
+        }
+        
+        .spec-icon { font-size: 22px; margin-bottom: 8px; }
+        .spec-value { font-size: 1rem; font-weight: 500; margin-bottom: 2px; }
+        .spec-label { font-size: 10px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
+        
+        .spec.wide { grid-column: span 3; display: flex; align-items: center; justify-content: center; gap: 12px; padding: 14px; }
+        .spec.wide .spec-icon { margin: 0; }
+        
+        .caffeine-dots {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
+            gap: 4px;
         }
         
         .caffeine-dot {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background: var(--border);
         }
         
-        .caffeine-dot.active.low { background: var(--accent); }
-        .caffeine-dot.active.medium { background: #fbbf24; }
-        .caffeine-dot.active.high { background: #ef4444; }
+        .caffeine-dot.active { background: var(--accent); }
+        .caffeine-dot.active.high { background: var(--warm); }
         
-        .infusions-badge {
+        .infusion-tag {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 6px 12px;
-            background: rgba(74, 222, 128, 0.1);
-            border-radius: 20px;
-            color: var(--accent);
-            font-weight: 500;
-            font-size: 14px;
-        }
-        
-        .infusions-badge.single {
-            background: rgba(255,255,255,0.05);
-            color: var(--muted);
-        }
-        
-        .preparation-section {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
-        }
-        
-        .preparation-title {
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--muted);
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        .preparation-text {
+            padding: 6px 14px;
+            border-radius: 100px;
             font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .infusion-tag.yes { background: var(--accent-soft); color: var(--accent); }
+        .infusion-tag.no { background: var(--border); color: var(--text-secondary); }
+        
+        .prep-section {
+            background: var(--bg);
+            border-radius: 16px;
+            padding: 20px;
+        }
+        
+        .prep-title {
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+        
+        .prep-text {
+            font-size: 14px;
             line-height: 1.7;
-            color: var(--prep-text);
+            color: var(--text);
         }
         
         footer {
             text-align: center;
-            margin-top: 60px;
-            padding: 20px;
-            color: var(--muted);
-            font-size: 13px;
+            margin-top: 80px;
+            color: var(--text-secondary);
+            font-size: 12px;
         }
         
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: var(--card);
-            border: 1px solid var(--border);
-            cursor: pointer;
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            z-index: 50;
-        }
-        
-        .theme-toggle:hover {
-            transform: scale(1.1);
-            border-color: var(--border-hover);
-        }
-        
-        @media (max-width: 500px) {
+        @media (max-width: 640px) {
             .tea-grid { grid-template-columns: 1fr; }
-            .detail-grid { grid-template-columns: 1fr; }
-            .detail-item.full { grid-column: span 1; }
-            .modal-name { font-size: 1.5rem; }
+            .specs-grid { grid-template-columns: repeat(2, 1fr); }
+            .spec.wide { grid-column: span 2; }
+            .container { padding: 40px 16px 80px; }
         }
     </style>
 </head>
 <body>
-    <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">🌙</button>
+    <div class="noise"></div>
+    
     <div class="container">
         <header>
-            <h1>🍵 Moje Čajová Sbírka</h1>
-            <p class="subtitle">8 prémiových čajů z celého světa</p>
+            <div class="header-top">
+                <div class="logo">Sbírka</div>
+                <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">◐</button>
+            </div>
+            <div class="hero">
+                <span class="collection-label">✦ 8 druhů</span>
+                <h1>Moje <em>čajová</em><br>kolekce</h1>
+                <p>Prémiové čaje z Japonska, Číny, Indie a Myanmaru. Každý s vlastním příběhem.</p>
+            </div>
         </header>
         
         <div class="tea-grid" id="teaGrid"></div>
         
-        <footer>Klikni na čaj pro detaily</footer>
+        <footer>Vyrobeno s péčí · 2024</footer>
     </div>
     
     <div class="modal-overlay" id="modalOverlay">
@@ -370,132 +438,116 @@
     <script>
         const teas = [
             {
-                name: "Vanilka - Bourbon",
-                type: "Černý (aromat.)",
+                name: "Vanilka Bourbon",
+                type: "Černý",
                 typeClass: "black",
                 origin: "Indie",
                 flag: "🇮🇳",
-                temp: "100 °C",
+                temp: "100°C",
                 time: "3 min",
-                amount: "10 g",
-                infusions: "Ne (1)",
-                multiInfusion: false,
-                caffeine: "Střední",
-                caffeineLevel: 2,
-                description: "Objevte kouzlo pravého černého čaje s přirozenou a smyslnou vůní vanilky Bourbon, která čaji dodává sametovou sladkost a teplý, příjemný nádech. Tato harmonická kombinace vytváří nápoj, který je jemný, hladký a přitom plný charakteru - ideální pro chvíle, kdy si chcete dopřát zasloužený odpočinek.",
-                preparation: "Vroucí vodou zalejte čaj v poměru 10 g (cca 5 zarovnaných čajových lžiček) na 1 litr vody. Ponechte 3 minuty louhovat. Poté přeceďte."
+                amount: "10g",
+                infusions: 1,
+                caffeine: 2,
+                description: "Objevte kouzlo pravého černého čaje s přirozenou a smyslnou vůní vanilky Bourbon, která čaji dodává sametovou sladkost a teplý, příjemný nádech.",
+                preparation: "Vroucí vodou zalejte čaj v poměru 10 g na 1 litr vody. Ponechte 3 minuty louhovat. Poté přeceďte."
             },
             {
                 name: "Mango Jasmín",
-                type: "Zelený (aromat.)",
+                type: "Zelený",
                 typeClass: "green",
                 origin: "Čína",
                 flag: "🇨🇳",
-                temp: "70 °C",
+                temp: "70°C",
                 time: "3 min",
-                amount: "10–12 g",
-                infusions: "Ne (1)",
-                multiInfusion: false,
-                caffeine: "Nízký",
-                caffeineLevel: 1,
-                description: "Pravý zelený čaj China Jasmin s květy v sobě spojuje svěží chuť manga a tropických plodů s jemným květovým tónem jasmínu. Příjemně nasládlé a voňavé potěšení ideální jak pro klidné chvíle, tak jako osvěžující čaj pro každý den.",
-                preparation: "Vodou o teplotě 70 °C zalejte čaj v poměru 10 g (cca 7 zarovnaných čajových lžiček) na 1 litr vody. Ponechte 3 minuty louhovat. Poté přeceďte."
+                amount: "10–12g",
+                infusions: 1,
+                caffeine: 1,
+                description: "Pravý zelený čaj China Jasmin s květy v sobě spojuje svěží chuť manga a tropických plodů s jemným květovým tónem jasmínu.",
+                preparation: "Vodou o teplotě 70°C zalejte čaj v poměru 10 g na 1 litr vody. Ponechte 3 minuty louhovat."
             },
             {
                 name: "Sencha Satsuma",
-                type: "Zelený (pravý)",
+                type: "Zelený",
                 typeClass: "green",
                 origin: "Japonsko",
                 flag: "🇯🇵",
-                temp: "80 °C",
+                temp: "80°C",
                 time: "2 min",
-                amount: "12 g",
-                infusions: "Ano (2–3)",
-                multiInfusion: true,
-                caffeine: "Nízký",
-                caffeineLevel: 1,
-                description: "Klasická japonská Sencha, lístky jasně zelené, svěží. Vůně nálevu plná, čistá, barva světle zelená. Výrazná chuť dlouze ulpívá na patře, závěr je lehký, velmi příjemný.",
-                preparation: "Vodou o teplotě 80 °C zalejte čaj v poměru 12 g (cca 7 zarovnaných čajových lžiček) na 1 litr vody. Ponechte 2 minuty louhovat. Poté přeceďte. Možno připravit 2-3 nálevy."
+                amount: "12g",
+                infusions: 3,
+                caffeine: 1,
+                description: "Klasická japonská Sencha, lístky jasně zelené, svěží. Vůně nálevu plná, čistá, barva světle zelená. Výrazná chuť dlouze ulpívá na patře.",
+                preparation: "Vodou o teplotě 80°C zalejte čaj v poměru 12 g na 1 litr vody. Ponechte 2 minuty louhovat. Možno připravit 2-3 nálevy."
             },
             {
                 name: "Tokajská Meruňka",
-                type: "Směs (Zel.+Bílý)",
+                type: "Směs",
                 typeClass: "blend",
                 origin: "Čína",
                 flag: "🇨🇳",
-                temp: "70 °C",
+                temp: "70°C",
                 time: "3 min",
-                amount: "10 g",
-                infusions: "Ne (1)",
-                multiInfusion: false,
-                caffeine: "Nízký",
-                caffeineLevel: 1,
-                description: "Pravý zelený čaj Sencha a pravý bílý čaj Snow Buds s jemnou, lákavou chutí zralých meruněk. Harmonické spojení čajů s ovocnými tóny, které vás potěší svou svěžestí a jemností.",
-                preparation: "Vodou o teplotě 70 °C zalejte čaj v poměru 10 g (cca 7 zarovnaných čajových lžiček) na 1 litr vody. Ponechte 3 minuty louhovat. Poté přeceďte."
+                amount: "10g",
+                infusions: 1,
+                caffeine: 1,
+                description: "Pravý zelený čaj Sencha a pravý bílý čaj Snow Buds s jemnou, lákavou chutí zralých meruněk. Harmonické spojení čajů s ovocnými tóny.",
+                preparation: "Vodou o teplotě 70°C zalejte čaj v poměru 10 g na 1 litr vody. Ponechte 3 minuty louhovat."
             },
             {
                 name: "Genmaicha Musashi",
-                type: "Zelený s rýží",
+                type: "Zelený",
                 typeClass: "green",
                 origin: "Japonsko",
                 flag: "🇯🇵",
-                temp: "90 °C",
-                time: "1,5 min",
-                amount: "12 g",
-                infusions: "Ano (1–2)",
-                multiInfusion: true,
-                caffeine: "Nízký",
-                caffeineLevel: 1,
-                description: "Lístky výtečného čaje Sencha jsou smíchány s praženou rýží. Genmaicha má půvabnou, lehce nasládlou, ořechovou chuť. Barva nálevu je zlatozelená. Musashi je jméno nejslavnějšího japonského samuraje.",
-                preparation: "Vodou o teplotě 90 °C zalejte čaj v poměru 12 g (cca 7 zarovnaných čajových lžiček) na 1 litr vody. Ponechte 1,5 minuty louhovat. Poté přeceďte. Možno připravit 1-2 nálevy."
+                temp: "90°C",
+                time: "1.5 min",
+                amount: "12g",
+                infusions: 2,
+                caffeine: 1,
+                description: "Lístky výtečného čaje Sencha smíchány s praženou rýží. Půvabná, lehce nasládlá, ořechová chuť. Musashi je jméno nejslavnějšího japonského samuraje.",
+                preparation: "Vodou o teplotě 90°C zalejte čaj v poměru 12 g na 1 litr vody. Ponechte 1,5 minuty louhovat. Možno připravit 1-2 nálevy."
             },
             {
                 name: "White Monkey",
-                type: "Zelený (pravý)",
+                type: "Zelený",
                 typeClass: "green",
                 origin: "Čína",
                 flag: "🇨🇳",
-                temp: "70–80 °C",
+                temp: "70–80°C",
                 time: "2–3 min",
-                amount: "12 g",
-                infusions: "Ano (2–3)",
-                multiInfusion: true,
-                caffeine: "Střední",
-                caffeineLevel: 2,
-                description: "Tradiční čínský zelený čaj, jehož dlouhé listy jsou ručně svinované do charakteristického tvaru. Vytváří světlý nálev s jemnou vůní a lahodně vyváženou chutí. Oblíbený pro svou lehkost a delikátní čajový charakter.",
-                preparation: "Vodou o teplotě 70-80 °C zalejte čaj v poměru 12 g (cca 6 zarovnaných čajových lžiček) na 1 litr vody. Ponechte 2-3 minut louhovat. Poté přeceďte. Možno připravit 3 nálevy."
+                amount: "12g",
+                infusions: 3,
+                caffeine: 2,
+                description: "Tradiční čínský zelený čaj, jehož dlouhé listy jsou ručně svinované do charakteristického tvaru. Světlý nálev s jemnou vůní a lahodně vyváženou chutí.",
+                preparation: "Vodou o teplotě 70-80°C zalejte čaj v poměru 12 g na 1 litr vody. Ponechte 2-3 minut louhovat. Možno připravit 3 nálevy."
             },
             {
-                name: "Myanmar Red Mt.",
-                type: "Zelený (pravý)",
+                name: "Myanmar Red Mountain",
+                type: "Zelený",
                 typeClass: "green",
                 origin: "Myanmar",
                 flag: "🇲🇲",
-                temp: "70–80 °C",
+                temp: "70–80°C",
                 time: "2–3 min",
-                amount: "12 g",
-                infusions: "Ano (2–3)",
-                multiInfusion: true,
-                caffeine: "Střední",
-                caffeineLevel: 2,
-                description: "Čaj se produkuje v oblasti Pindaya z čajovníků ve stáří od 25 až do 100 let v nadmořské výšce okolo 1200 metrů. Více než 50 % obyvatel tohoto regionu si vydělává na živobytí právě pěstováním čaje. Převážně zavinuté listy stříbřitě zelené barvy dávají po zalití sytě žlutý nálev. V chuti převažují sušená jablka a umami s lehkým kouřovým tónem.",
-                preparation: "Vodou o teplotě 70-80 °C zalejte čaj v poměru 12 g (cca 6 zarovnaných čajových lžiček) na 1 litr vody. Ponechte 2-3 minut louhovat. Poté přeceďte. Možno připravit 2-3 nálevy."
+                amount: "12g",
+                infusions: 3,
+                caffeine: 2,
+                description: "Z čajovníků ve stáří 25–100 let v nadmořské výšce 1200 m. V chuti převažují sušená jablka a umami s lehkým kouřovým tónem.",
+                preparation: "Vodou o teplotě 70-80°C zalejte čaj v poměru 12 g na 1 litr vody. Ponechte 2-3 minut louhovat. Možno připravit 2-3 nálevy."
             },
             {
                 name: "Masala Chai",
-                type: "Černý s kořením",
+                type: "Černý",
                 typeClass: "black",
                 origin: "Indie",
                 flag: "🇮🇳",
-                temp: "100 °C",
+                temp: "100°C",
                 time: "3 min",
-                amount: "8 g",
-                infusions: "Ne (1)",
-                multiInfusion: false,
-                caffeine: "Střední",
-                caffeineLevel: 2,
-                description: "Tradiční indický čaj Masala Chai v sypané podobě. Kombinace pravého černého čaje a aromatického koření - kardamomu, skořice a hřebíčku - vytváří silný, kořeněný nálev s nezaměnitelnou vůní a chutí. Skvělý samotný nebo s mlékem a cukrem podle klasického indického receptu.",
-                preparation: "Vroucí vodou zalejte čaj v poměru 8 g (cca 5 zarovnaných čajových lžiček) na 1 litr vody. Ponechte 3 minuty louhovat. Poté přeceďte. Pravý indický Masala Chai: dejte vařit 100 ml vody s 1 lžičkou cukru a 1 lžící čaje. Jakmile směs začne vřít přidejte 300 ml horkého mléka a opět přiveďte k varu. Následně na 3 minuty odstavte a poté přeceďte."
+                amount: "8g",
+                infusions: 1,
+                caffeine: 2,
+                description: "Tradiční indický čaj. Kombinace pravého černého čaje a aromatického koření — kardamomu, skořice a hřebíčku. Skvělý samotný nebo s mlékem.",
+                preparation: "Vroucí vodou zalejte čaj v poměru 8 g na 1 litr vody. Pro pravý Masala Chai: vařte 100 ml vody s 1 lžičkou cukru a 1 lžící čaje, přidejte 300 ml horkého mléka, přiveďte k varu, odstavte na 3 minuty a přeceďte."
             }
         ];
 
@@ -503,71 +555,71 @@
             const grid = document.getElementById('teaGrid');
             grid.innerHTML = teas.map((tea, i) => `
                 <article class="tea-card" onclick="openDetail(${i})">
-                    <span class="tea-type-badge type-${tea.typeClass}">${tea.type}</span>
-                    <h2 class="tea-card-name">${tea.name}</h2>
-                    <p class="tea-card-origin">${tea.flag} ${tea.origin}</p>
-                    <div class="tea-card-quick">
-                        <span>🌡️ ${tea.temp}</span>
-                        <span>⏱️ ${tea.time}</span>
+                    <div class="tea-card-inner">
+                        <div class="tea-meta">
+                            <span class="tea-type ${tea.typeClass}">${tea.type}</span>
+                        </div>
+                        <h2 class="tea-name">${tea.name}</h2>
+                        <p class="tea-origin">${tea.flag} ${tea.origin}</p>
+                        <div class="tea-quick">
+                            <div class="tea-stat">
+                                <span class="tea-stat-value">${tea.temp}</span>
+                                <span class="tea-stat-label">Teplota</span>
+                            </div>
+                            <div class="tea-stat">
+                                <span class="tea-stat-value">${tea.time}</span>
+                                <span class="tea-stat-label">Čas</span>
+                            </div>
+                        </div>
                     </div>
                 </article>
             `).join('');
         }
 
         function openDetail(index) {
-            const tea = teas[index];
-            const caffeineClass = tea.caffeineLevel === 1 ? 'low' : tea.caffeineLevel === 2 ? 'medium' : 'high';
+            const t = teas[index];
+            const caffeineClass = t.caffeine >= 2 ? 'high' : '';
             
             document.getElementById('modal').innerHTML = `
                 <div class="modal-header">
                     <button class="modal-close" onclick="closeDetail()">×</button>
                     <div class="modal-type">
-                        <span class="tea-type-badge type-${tea.typeClass}">${tea.type}</span>
+                        <span class="tea-type ${t.typeClass}">${t.type}</span>
                     </div>
-                    <h2 class="modal-name">${tea.name}</h2>
-                    <p class="modal-origin">${tea.flag} ${tea.origin}</p>
-                    <p class="modal-description">${tea.description}</p>
+                    <h2 class="modal-name">${t.name}</h2>
+                    <p class="modal-origin">${t.flag} ${t.origin}</p>
+                    <p class="modal-desc">"${t.description}"</p>
                 </div>
                 <div class="modal-body">
-                    <div class="detail-grid">
-                        <div class="detail-item">
-                            <div class="detail-icon">🌡️</div>
-                            <div class="detail-value">${tea.temp}</div>
-                            <div class="detail-label">Teplota vody</div>
+                    <div class="specs-grid">
+                        <div class="spec">
+                            <div class="spec-icon">🌡</div>
+                            <div class="spec-value">${t.temp}</div>
+                            <div class="spec-label">Teplota</div>
                         </div>
-                        <div class="detail-item">
-                            <div class="detail-icon">⏱️</div>
-                            <div class="detail-value">${tea.time}</div>
-                            <div class="detail-label">Doba louhování</div>
+                        <div class="spec">
+                            <div class="spec-icon">⏱</div>
+                            <div class="spec-value">${t.time}</div>
+                            <div class="spec-label">Louhování</div>
                         </div>
-                        <div class="detail-item">
-                            <div class="detail-icon">⚖️</div>
-                            <div class="detail-value">${tea.amount}</div>
-                            <div class="detail-label">Množství na 1 litr</div>
+                        <div class="spec">
+                            <div class="spec-icon">⚖</div>
+                            <div class="spec-value">${t.amount}</div>
+                            <div class="spec-label">Na litr</div>
                         </div>
-                        <div class="detail-item">
-                            <div class="detail-icon">☕</div>
-                            <div class="detail-value">${tea.caffeine}</div>
-                            <div class="detail-label">Obsah kofeinu</div>
-                            <div class="caffeine-indicator" style="margin-top: 6px;">
-                                <div class="caffeine-dot ${tea.caffeineLevel >= 1 ? 'active ' + caffeineClass : ''}"></div>
-                                <div class="caffeine-dot ${tea.caffeineLevel >= 2 ? 'active ' + caffeineClass : ''}"></div>
-                                <div class="caffeine-dot ${tea.caffeineLevel >= 3 ? 'active ' + caffeineClass : ''}"></div>
+                        <div class="spec wide">
+                            <span class="spec-label">Kofein</span>
+                            <div class="caffeine-dots">
+                                ${[1,2,3].map(n => `<div class="caffeine-dot ${n <= t.caffeine ? 'active ' + caffeineClass : ''}"></div>`).join('')}
                             </div>
-                        </div>
-                        <div class="detail-item full">
-                            <div class="detail-icon">🔄</div>
-                            <div class="detail-value">
-                                <span class="infusions-badge ${tea.multiInfusion ? '' : 'single'}">
-                                    ${tea.multiInfusion ? '✓' : '—'} ${tea.infusions}
-                                </span>
-                            </div>
-                            <div class="detail-label">Více nálevů</div>
+                            <span style="flex:1"></span>
+                            <span class="spec-label">Nálevy</span>
+                            <span class="infusion-tag ${t.infusions > 1 ? 'yes' : 'no'}">${t.infusions > 1 ? '✓ ' + t.infusions + '×' : '1×'}</span>
                         </div>
                     </div>
-                    <div class="preparation-section">
-                        <div class="preparation-title">📋 Příprava</div>
-                        <p class="preparation-text">${tea.preparation}</p>
+                    <div class="prep-section">
+                        <div class="prep-title">Příprava</div>
+                        <p class="prep-text">${t.preparation}</p>
                     </div>
                 </div>
             `;
@@ -583,36 +635,22 @@
         document.getElementById('modalOverlay').addEventListener('click', e => {
             if (e.target.id === 'modalOverlay') closeDetail();
         });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDetail(); });
 
-        document.addEventListener('keydown', e => {
-            if (e.key === 'Escape') closeDetail();
-        });
-
-        renderGrid();
-        
-        // Theme toggle
         function toggleTheme() {
             const html = document.documentElement;
-            const btn = document.getElementById('themeToggle');
-            if (html.dataset.theme === 'light') {
-                html.dataset.theme = 'dark';
-                btn.textContent = '🌙';
-                localStorage.setItem('theme', 'dark');
-            } else {
-                html.dataset.theme = 'light';
-                btn.textContent = '☀️';
-                localStorage.setItem('theme', 'light');
-            }
+            const isDark = html.dataset.theme !== 'light';
+            html.dataset.theme = isDark ? 'light' : 'dark';
+            localStorage.setItem('theme', html.dataset.theme);
         }
-        
-        // Load saved theme
+
         (function() {
-            const saved = localStorage.getItem('theme');
-            if (saved === 'light') {
+            if (localStorage.getItem('theme') === 'light') {
                 document.documentElement.dataset.theme = 'light';
-                document.getElementById('themeToggle').textContent = '☀️';
             }
         })();
+
+        renderGrid();
     </script>
 </body>
 </html>
