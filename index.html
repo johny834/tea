@@ -85,7 +85,7 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: transparent;
+            background: var(--surface);
             border: 1px solid var(--border);
             cursor: pointer;
             font-size: 16px;
@@ -93,6 +93,7 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
+            color: var(--text);
         }
         
         .theme-toggle:hover {
@@ -417,7 +418,7 @@
         <header>
             <div class="header-top">
                 <div class="logo">Sbírka</div>
-                <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">◐</button>
+                <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">☀️</button>
             </div>
             <div class="hero">
                 <span class="collection-label">✦ 8 druhů</span>
@@ -639,14 +640,17 @@
 
         function toggleTheme() {
             const html = document.documentElement;
+            const btn = document.getElementById('themeToggle');
             const isDark = html.dataset.theme !== 'light';
             html.dataset.theme = isDark ? 'light' : 'dark';
+            btn.textContent = isDark ? '🌙' : '☀️';
             localStorage.setItem('theme', html.dataset.theme);
         }
 
         (function() {
             if (localStorage.getItem('theme') === 'light') {
                 document.documentElement.dataset.theme = 'light';
+                document.getElementById('themeToggle').textContent = '🌙';
             }
         })();
 
