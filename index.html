@@ -81,24 +81,46 @@
             color: var(--text-secondary);
         }
         
-        .theme-toggle {
-            width: 40px;
+        .header-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .toggle-btn {
             height: 40px;
-            border-radius: 50%;
+            border-radius: 20px;
             background: var(--surface);
             border: 1px solid var(--border);
             cursor: pointer;
-            font-size: 16px;
+            font-size: 13px;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
             color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
+        }
+        
+        .toggle-btn:hover {
+            border-color: var(--border-hover);
+        }
+        
+        .theme-toggle {
+            width: 40px;
+            font-size: 16px;
         }
         
         .theme-toggle:hover {
-            border-color: var(--border-hover);
             transform: rotate(20deg);
+        }
+        
+        .lang-toggle {
+            padding: 0 16px;
+            gap: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
         
         .hero {
@@ -417,19 +439,22 @@
     <div class="container">
         <header>
             <div class="header-top">
-                <div class="logo">Sbírka</div>
-                <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">☀️</button>
+                <div class="logo" id="logo">Sbírka</div>
+                <div class="header-controls">
+                    <button class="toggle-btn lang-toggle" onclick="toggleLang()" id="langToggle">EN</button>
+                    <button class="toggle-btn theme-toggle" onclick="toggleTheme()" id="themeToggle">☀️</button>
+                </div>
             </div>
             <div class="hero">
-                <span class="collection-label">✦ 8 druhů</span>
-                <h1>Moje <em>čajová</em><br>kolekce</h1>
-                <p>Prémiové čaje z Japonska, Číny, Indie a Myanmaru. Každý s vlastním příběhem.</p>
+                <span class="collection-label" id="collectionLabel">✦ 8 druhů</span>
+                <h1 id="heroTitle">Moje <em>čajová</em><br>kolekce</h1>
+                <p id="heroSubtitle">Prémiové čaje z Japonska, Číny, Indie a Myanmaru. Každý s vlastním příběhem.</p>
             </div>
         </header>
         
         <div class="tea-grid" id="teaGrid"></div>
         
-        <footer>Uvařeno s péčí · 2026</footer>
+        <footer id="footer">Uvařeno s péčí · 2026</footer>
     </div>
     
     <div class="modal-overlay" id="modalOverlay">
@@ -437,95 +462,168 @@
     </div>
 
     <script>
+        let lang = 'cs';
+        
+        const i18n = {
+            cs: {
+                logo: 'Sbírka',
+                label: '✦ 8 druhů',
+                title: 'Moje <em>čajová</em><br>kolekce',
+                subtitle: 'Prémiové čaje z Japonska, Číny, Indie a Myanmaru. Každý s vlastním příběhem.',
+                footer: 'Uvařeno s péčí · 2026',
+                temp: 'Teplota',
+                time: 'Čas',
+                steeping: 'Louhování',
+                perLiter: 'Na litr',
+                caffeine: 'Kofein',
+                infusions: 'Nálevy',
+                preparation: 'Příprava',
+                types: { green: 'Zelený', black: 'Černý', blend: 'Směs' },
+                origins: { India: 'Indie', China: 'Čína', Japan: 'Japonsko', Myanmar: 'Myanmar' }
+            },
+            en: {
+                logo: 'Collection',
+                label: '✦ 8 varieties',
+                title: 'My <em>tea</em><br>collection',
+                subtitle: 'Premium teas from Japan, China, India and Myanmar. Each with its own story.',
+                footer: 'Brewed with care · 2026',
+                temp: 'Temp',
+                time: 'Time',
+                steeping: 'Steeping',
+                perLiter: 'Per liter',
+                caffeine: 'Caffeine',
+                infusions: 'Infusions',
+                preparation: 'Preparation',
+                types: { green: 'Green', black: 'Black', blend: 'Blend' },
+                origins: { India: 'India', China: 'China', Japan: 'Japan', Myanmar: 'Myanmar' }
+            }
+        };
+
         const teas = [
             {
                 name: "Vanilka Bourbon",
-                type: "Černý",
-                typeClass: "black",
-                origin: "Indie",
+                nameEn: "Bourbon Vanilla",
+                type: "black",
+                origin: "India",
                 flag: "🇮🇳",
                 temp: "100°C",
                 time: "3 min",
                 amount: "10g",
                 infusions: 1,
                 caffeine: 2,
-                description: "Objevte kouzlo pravého černého čaje s přirozenou a smyslnou vůní vanilky Bourbon, která čaji dodává sametovou sladkost a teplý, příjemný nádech.",
-                preparation: "Vroucí vodou zalejte čaj v poměru 10 g na 1 litr vody. Ponechte 3 minuty louhovat. Poté přeceďte."
+                desc: {
+                    cs: "Objevte kouzlo pravého černého čaje s přirozenou a smyslnou vůní vanilky Bourbon, která čaji dodává sametovou sladkost a teplý, příjemný nádech.",
+                    en: "Discover the magic of pure black tea with the natural, sensual aroma of Bourbon vanilla, adding velvety sweetness and a warm, pleasant touch."
+                },
+                prep: {
+                    cs: "Vroucí vodou zalejte čaj v poměru 10 g na 1 litr vody. Ponechte 3 minuty louhovat. Poté přeceďte.",
+                    en: "Pour boiling water over tea in ratio of 10g per 1 liter. Steep for 3 minutes. Strain and serve."
+                }
             },
             {
                 name: "Mango Jasmín",
-                type: "Zelený",
-                typeClass: "green",
-                origin: "Čína",
+                nameEn: "Mango Jasmine",
+                type: "green",
+                origin: "China",
                 flag: "🇨🇳",
                 temp: "70°C",
                 time: "3 min",
                 amount: "10–12g",
                 infusions: 1,
                 caffeine: 1,
-                description: "Pravý zelený čaj China Jasmin s květy v sobě spojuje svěží chuť manga a tropických plodů s jemným květovým tónem jasmínu.",
-                preparation: "Vodou o teplotě 70°C zalejte čaj v poměru 10 g na 1 litr vody. Ponechte 3 minuty louhovat."
+                desc: {
+                    cs: "Pravý zelený čaj China Jasmin s květy v sobě spojuje svěží chuť manga a tropických plodů s jemným květovým tónem jasmínu.",
+                    en: "Authentic China Jasmine green tea with flowers, combining fresh mango and tropical fruit flavors with delicate jasmine floral notes."
+                },
+                prep: {
+                    cs: "Vodou o teplotě 70°C zalejte čaj v poměru 10 g na 1 litr vody. Ponechte 3 minuty louhovat.",
+                    en: "Pour 70°C water over tea in ratio of 10g per 1 liter. Steep for 3 minutes."
+                }
             },
             {
                 name: "Sencha Satsuma",
-                type: "Zelený",
-                typeClass: "green",
-                origin: "Japonsko",
+                nameEn: "Sencha Satsuma",
+                type: "green",
+                origin: "Japan",
                 flag: "🇯🇵",
                 temp: "80°C",
                 time: "2 min",
                 amount: "12g",
                 infusions: 3,
                 caffeine: 1,
-                description: "Klasická japonská Sencha, lístky jasně zelené, svěží. Vůně nálevu plná, čistá, barva světle zelená. Výrazná chuť dlouze ulpívá na patře.",
-                preparation: "Vodou o teplotě 80°C zalejte čaj v poměru 12 g na 1 litr vody. Ponechte 2 minuty louhovat. Možno připravit 2-3 nálevy."
+                desc: {
+                    cs: "Klasická japonská Sencha, lístky jasně zelené, svěží. Vůně nálevu plná, čistá, barva světle zelená. Výrazná chuť dlouze ulpívá na patře.",
+                    en: "Classic Japanese Sencha with bright green, fresh leaves. Full, clean aroma with light green color. Distinctive taste that lingers on the palate."
+                },
+                prep: {
+                    cs: "Vodou o teplotě 80°C zalejte čaj v poměru 12 g na 1 litr vody. Ponechte 2 minuty louhovat. Možno připravit 2-3 nálevy.",
+                    en: "Pour 80°C water over tea in ratio of 12g per 1 liter. Steep for 2 minutes. Can be infused 2-3 times."
+                }
             },
             {
                 name: "Tokajská Meruňka",
-                type: "Směs",
-                typeClass: "blend",
-                origin: "Čína",
+                nameEn: "Tokaj Apricot",
+                type: "blend",
+                origin: "China",
                 flag: "🇨🇳",
                 temp: "70°C",
                 time: "3 min",
                 amount: "10g",
                 infusions: 1,
                 caffeine: 1,
-                description: "Pravý zelený čaj Sencha a pravý bílý čaj Snow Buds s jemnou, lákavou chutí zralých meruněk. Harmonické spojení čajů s ovocnými tóny.",
-                preparation: "Vodou o teplotě 70°C zalejte čaj v poměru 10 g na 1 litr vody. Ponechte 3 minuty louhovat."
+                desc: {
+                    cs: "Pravý zelený čaj Sencha a pravý bílý čaj Snow Buds s jemnou, lákavou chutí zralých meruněk. Harmonické spojení čajů s ovocnými tóny.",
+                    en: "Authentic Sencha green tea and Snow Buds white tea with delicate, enticing ripe apricot flavor. Harmonious blend with fruity notes."
+                },
+                prep: {
+                    cs: "Vodou o teplotě 70°C zalejte čaj v poměru 10 g na 1 litr vody. Ponechte 3 minuty louhovat.",
+                    en: "Pour 70°C water over tea in ratio of 10g per 1 liter. Steep for 3 minutes."
+                }
             },
             {
                 name: "Genmaicha Musashi",
-                type: "Zelený",
-                typeClass: "green",
-                origin: "Japonsko",
+                nameEn: "Genmaicha Musashi",
+                type: "green",
+                origin: "Japan",
                 flag: "🇯🇵",
                 temp: "90°C",
                 time: "1.5 min",
                 amount: "12g",
                 infusions: 2,
                 caffeine: 1,
-                description: "Lístky výtečného čaje Sencha smíchány s praženou rýží. Půvabná, lehce nasládlá, ořechová chuť. Musashi je jméno nejslavnějšího japonského samuraje.",
-                preparation: "Vodou o teplotě 90°C zalejte čaj v poměru 12 g na 1 litr vody. Ponechte 1,5 minuty louhovat. Možno připravit 1-2 nálevy."
+                desc: {
+                    cs: "Lístky výtečného čaje Sencha smíchány s praženou rýží. Půvabná, lehce nasládlá, ořechová chuť. Musashi je jméno nejslavnějšího japonského samuraje.",
+                    en: "Excellent Sencha leaves blended with roasted rice. Charming, slightly sweet, nutty flavor. Musashi is the name of Japan's most famous samurai."
+                },
+                prep: {
+                    cs: "Vodou o teplotě 90°C zalejte čaj v poměru 12 g na 1 litr vody. Ponechte 1,5 minuty louhovat. Možno připravit 1-2 nálevy.",
+                    en: "Pour 90°C water over tea in ratio of 12g per 1 liter. Steep for 1.5 minutes. Can be infused 1-2 times."
+                }
             },
             {
                 name: "White Monkey",
-                type: "Zelený",
-                typeClass: "green",
-                origin: "Čína",
+                nameEn: "White Monkey",
+                type: "green",
+                origin: "China",
                 flag: "🇨🇳",
                 temp: "70–80°C",
                 time: "2–3 min",
                 amount: "12g",
                 infusions: 3,
                 caffeine: 2,
-                description: "Tradiční čínský zelený čaj, jehož dlouhé listy jsou ručně svinované do charakteristického tvaru. Světlý nálev s jemnou vůní a lahodně vyváženou chutí.",
-                preparation: "Vodou o teplotě 70-80°C zalejte čaj v poměru 12 g na 1 litr vody. Ponechte 2-3 minut louhovat. Možno připravit 3 nálevy."
+                desc: {
+                    cs: "Tradiční čínský zelený čaj, jehož dlouhé listy jsou ručně svinované do charakteristického tvaru. Světlý nálev s jemnou vůní a lahodně vyváženou chutí.",
+                    en: "Traditional Chinese green tea with long leaves hand-rolled into a characteristic shape. Light infusion with delicate aroma and balanced taste."
+                },
+                prep: {
+                    cs: "Vodou o teplotě 70-80°C zalejte čaj v poměru 12 g na 1 litr vody. Ponechte 2-3 minut louhovat. Možno připravit 3 nálevy.",
+                    en: "Pour 70-80°C water over tea in ratio of 12g per 1 liter. Steep for 2-3 minutes. Can be infused 3 times."
+                }
             },
             {
                 name: "Myanmar Red Mountain",
-                type: "Zelený",
-                typeClass: "green",
+                nameEn: "Myanmar Red Mountain",
+                type: "green",
                 origin: "Myanmar",
                 flag: "🇲🇲",
                 temp: "70–80°C",
@@ -533,24 +631,51 @@
                 amount: "12g",
                 infusions: 3,
                 caffeine: 2,
-                description: "Z čajovníků ve stáří 25–100 let v nadmořské výšce 1200 m. V chuti převažují sušená jablka a umami s lehkým kouřovým tónem.",
-                preparation: "Vodou o teplotě 70-80°C zalejte čaj v poměru 12 g na 1 litr vody. Ponechte 2-3 minut louhovat. Možno připravit 2-3 nálevy."
+                desc: {
+                    cs: "Z čajovníků ve stáří 25–100 let v nadmořské výšce 1200 m. V chuti převažují sušená jablka a umami s lehkým kouřovým tónem.",
+                    en: "From tea trees aged 25-100 years at 1200m altitude. Flavor dominated by dried apples and umami with a light smoky note."
+                },
+                prep: {
+                    cs: "Vodou o teplotě 70-80°C zalejte čaj v poměru 12 g na 1 litr vody. Ponechte 2-3 minut louhovat. Možno připravit 2-3 nálevy.",
+                    en: "Pour 70-80°C water over tea in ratio of 12g per 1 liter. Steep for 2-3 minutes. Can be infused 2-3 times."
+                }
             },
             {
                 name: "Masala Chai",
-                type: "Černý",
-                typeClass: "black",
-                origin: "Indie",
+                nameEn: "Masala Chai",
+                type: "black",
+                origin: "India",
                 flag: "🇮🇳",
                 temp: "100°C",
                 time: "3 min",
                 amount: "8g",
                 infusions: 1,
                 caffeine: 2,
-                description: "Tradiční indický čaj. Kombinace pravého černého čaje a aromatického koření — kardamomu, skořice a hřebíčku. Skvělý samotný nebo s mlékem.",
-                preparation: "Vroucí vodou zalejte čaj v poměru 8 g na 1 litr vody. Pro pravý Masala Chai: vařte 100 ml vody s 1 lžičkou cukru a 1 lžící čaje, přidejte 300 ml horkého mléka, přiveďte k varu, odstavte na 3 minuty a přeceďte."
+                desc: {
+                    cs: "Tradiční indický čaj. Kombinace pravého černého čaje a aromatického koření — kardamomu, skořice a hřebíčku. Skvělý samotný nebo s mlékem.",
+                    en: "Traditional Indian tea. Blend of pure black tea with aromatic spices — cardamom, cinnamon and cloves. Excellent alone or with milk."
+                },
+                prep: {
+                    cs: "Vroucí vodou zalejte čaj v poměru 8 g na 1 litr vody. Pro pravý Masala Chai: vařte 100 ml vody s 1 lžičkou cukru a 1 lžící čaje, přidejte 300 ml horkého mléka, přiveďte k varu, odstavte na 3 minuty a přeceďte.",
+                    en: "Pour boiling water over tea in ratio of 8g per 1 liter. For authentic Masala Chai: boil 100ml water with 1 tsp sugar and 1 tbsp tea, add 300ml hot milk, bring to boil, remove for 3 minutes and strain."
+                }
             }
         ];
+
+        function t(key) {
+            return i18n[lang][key];
+        }
+
+        function updateUI() {
+            document.getElementById('logo').textContent = t('logo');
+            document.getElementById('collectionLabel').innerHTML = t('label');
+            document.getElementById('heroTitle').innerHTML = t('title');
+            document.getElementById('heroSubtitle').textContent = t('subtitle');
+            document.getElementById('footer').textContent = t('footer');
+            document.getElementById('langToggle').textContent = lang === 'cs' ? 'EN' : 'CZ';
+            document.documentElement.lang = lang;
+            renderGrid();
+        }
 
         function renderGrid() {
             const grid = document.getElementById('teaGrid');
@@ -558,18 +683,18 @@
                 <article class="tea-card" onclick="openDetail(${i})">
                     <div class="tea-card-inner">
                         <div class="tea-meta">
-                            <span class="tea-type ${tea.typeClass}">${tea.type}</span>
+                            <span class="tea-type ${tea.type}">${t('types')[tea.type]}</span>
                         </div>
-                        <h2 class="tea-name">${tea.name}</h2>
-                        <p class="tea-origin">${tea.flag} ${tea.origin}</p>
+                        <h2 class="tea-name">${lang === 'cs' ? tea.name : tea.nameEn}</h2>
+                        <p class="tea-origin">${tea.flag} ${t('origins')[tea.origin]}</p>
                         <div class="tea-quick">
                             <div class="tea-stat">
                                 <span class="tea-stat-value">${tea.temp}</span>
-                                <span class="tea-stat-label">Teplota</span>
+                                <span class="tea-stat-label">${t('temp')}</span>
                             </div>
                             <div class="tea-stat">
                                 <span class="tea-stat-value">${tea.time}</span>
-                                <span class="tea-stat-label">Čas</span>
+                                <span class="tea-stat-label">${t('time')}</span>
                             </div>
                         </div>
                     </div>
@@ -578,49 +703,49 @@
         }
 
         function openDetail(index) {
-            const t = teas[index];
-            const caffeineClass = t.caffeine >= 2 ? 'high' : '';
+            const tea = teas[index];
+            const caffeineClass = tea.caffeine >= 2 ? 'high' : '';
             
             document.getElementById('modal').innerHTML = `
                 <div class="modal-header">
                     <button class="modal-close" onclick="closeDetail()">×</button>
                     <div class="modal-type">
-                        <span class="tea-type ${t.typeClass}">${t.type}</span>
+                        <span class="tea-type ${tea.type}">${t('types')[tea.type]}</span>
                     </div>
-                    <h2 class="modal-name">${t.name}</h2>
-                    <p class="modal-origin">${t.flag} ${t.origin}</p>
-                    <p class="modal-desc">"${t.description}"</p>
+                    <h2 class="modal-name">${lang === 'cs' ? tea.name : tea.nameEn}</h2>
+                    <p class="modal-origin">${tea.flag} ${t('origins')[tea.origin]}</p>
+                    <p class="modal-desc">"${tea.desc[lang]}"</p>
                 </div>
                 <div class="modal-body">
                     <div class="specs-grid">
                         <div class="spec">
                             <div class="spec-icon">🌡</div>
-                            <div class="spec-value">${t.temp}</div>
-                            <div class="spec-label">Teplota</div>
+                            <div class="spec-value">${tea.temp}</div>
+                            <div class="spec-label">${t('temp')}</div>
                         </div>
                         <div class="spec">
                             <div class="spec-icon">⏱</div>
-                            <div class="spec-value">${t.time}</div>
-                            <div class="spec-label">Louhování</div>
+                            <div class="spec-value">${tea.time}</div>
+                            <div class="spec-label">${t('steeping')}</div>
                         </div>
                         <div class="spec">
                             <div class="spec-icon">⚖</div>
-                            <div class="spec-value">${t.amount}</div>
-                            <div class="spec-label">Na litr</div>
+                            <div class="spec-value">${tea.amount}</div>
+                            <div class="spec-label">${t('perLiter')}</div>
                         </div>
                         <div class="spec wide">
-                            <span class="spec-label">Kofein</span>
+                            <span class="spec-label">${t('caffeine')}</span>
                             <div class="caffeine-dots">
-                                ${[1,2,3].map(n => `<div class="caffeine-dot ${n <= t.caffeine ? 'active ' + caffeineClass : ''}"></div>`).join('')}
+                                ${[1,2,3].map(n => `<div class="caffeine-dot ${n <= tea.caffeine ? 'active ' + caffeineClass : ''}"></div>`).join('')}
                             </div>
                             <span style="flex:1"></span>
-                            <span class="spec-label">Nálevy</span>
-                            <span class="infusion-tag ${t.infusions > 1 ? 'yes' : 'no'}">${t.infusions > 1 ? '✓ ' + t.infusions + '×' : '1×'}</span>
+                            <span class="spec-label">${t('infusions')}</span>
+                            <span class="infusion-tag ${tea.infusions > 1 ? 'yes' : 'no'}">${tea.infusions > 1 ? '✓ ' + tea.infusions + '×' : '1×'}</span>
                         </div>
                     </div>
                     <div class="prep-section">
-                        <div class="prep-title">Příprava</div>
-                        <p class="prep-text">${t.preparation}</p>
+                        <div class="prep-title">${t('preparation')}</div>
+                        <p class="prep-text">${tea.prep[lang]}</p>
                     </div>
                 </div>
             `;
@@ -647,14 +772,22 @@
             localStorage.setItem('theme', html.dataset.theme);
         }
 
+        function toggleLang() {
+            lang = lang === 'cs' ? 'en' : 'cs';
+            localStorage.setItem('lang', lang);
+            updateUI();
+        }
+
         (function() {
             if (localStorage.getItem('theme') === 'light') {
                 document.documentElement.dataset.theme = 'light';
                 document.getElementById('themeToggle').textContent = '🌙';
             }
+            if (localStorage.getItem('lang') === 'en') {
+                lang = 'en';
+            }
+            updateUI();
         })();
-
-        renderGrid();
     </script>
 </body>
 </html>
