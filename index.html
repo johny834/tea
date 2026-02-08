@@ -137,7 +137,7 @@
         .modal {
             background: var(--card);
             border-radius: 24px;
-            max-width: 500px;
+            max-width: 540px;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
@@ -176,7 +176,7 @@
         
         .modal-name {
             font-family: 'Playfair Display', serif;
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 600;
             line-height: 1.2;
         }
@@ -187,37 +187,44 @@
             font-size: 15px;
         }
         
+        .modal-description {
+            margin-top: 16px;
+            font-size: 15px;
+            line-height: 1.7;
+            color: #bbb;
+        }
+        
         .modal-body {
-            padding: 24px 28px 32px;
+            padding: 24px 28px 28px;
         }
         
         .detail-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            margin-bottom: 24px;
+            gap: 14px;
+            margin-bottom: 20px;
         }
         
         .detail-item {
             background: rgba(255,255,255,0.03);
             border-radius: 12px;
-            padding: 16px;
+            padding: 14px;
             text-align: center;
         }
         
         .detail-icon {
-            font-size: 28px;
-            margin-bottom: 8px;
+            font-size: 24px;
+            margin-bottom: 6px;
         }
         
         .detail-value {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 600;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
         
         .detail-label {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--muted);
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -247,16 +254,41 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 8px 14px;
+            padding: 6px 12px;
             background: rgba(74, 222, 128, 0.1);
             border-radius: 20px;
             color: var(--accent);
             font-weight: 500;
+            font-size: 14px;
         }
         
         .infusions-badge.single {
             background: rgba(255,255,255,0.05);
             color: var(--muted);
+        }
+        
+        .preparation-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #222;
+        }
+        
+        .preparation-title {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--muted);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .preparation-text {
+            font-size: 13px;
+            line-height: 1.7;
+            color: #999;
         }
         
         footer {
@@ -271,6 +303,7 @@
             .tea-grid { grid-template-columns: 1fr; }
             .detail-grid { grid-template-columns: 1fr; }
             .detail-item.full { grid-column: span 1; }
+            .modal-name { font-size: 1.5rem; }
         }
     </style>
 </head>
@@ -304,7 +337,9 @@
                 infusions: "Ne (1)",
                 multiInfusion: false,
                 caffeine: "Střední",
-                caffeineLevel: 2
+                caffeineLevel: 2,
+                description: "Objevte kouzlo pravého černého čaje s přirozenou a smyslnou vůní vanilky Bourbon, která čaji dodává sametovou sladkost a teplý, příjemný nádech. Tato harmonická kombinace vytváří nápoj, který je jemný, hladký a přitom plný charakteru - ideální pro chvíle, kdy si chcete dopřát zasloužený odpočinek.",
+                preparation: "Vroucí vodou zalejte čaj v poměru 10 g (cca 5 zarovnaných čajových lžiček) na 1 litr vody. Ponechte 3 minuty louhovat. Poté přeceďte."
             },
             {
                 name: "Mango Jasmín",
@@ -318,7 +353,9 @@
                 infusions: "Ne (1)",
                 multiInfusion: false,
                 caffeine: "Nízký",
-                caffeineLevel: 1
+                caffeineLevel: 1,
+                description: "Pravý zelený čaj China Jasmin s květy v sobě spojuje svěží chuť manga a tropických plodů s jemným květovým tónem jasmínu. Příjemně nasládlé a voňavé potěšení ideální jak pro klidné chvíle, tak jako osvěžující čaj pro každý den.",
+                preparation: "Vodou o teplotě 70 °C zalejte čaj v poměru 10 g (cca 7 zarovnaných čajových lžiček) na 1 litr vody. Ponechte 3 minuty louhovat. Poté přeceďte."
             },
             {
                 name: "Sencha Satsuma",
@@ -331,8 +368,10 @@
                 amount: "12 g",
                 infusions: "Ano (2–3)",
                 multiInfusion: true,
-                caffeine: "Vysoký",
-                caffeineLevel: 3
+                caffeine: "Nízký",
+                caffeineLevel: 1,
+                description: "Klasická japonská Sencha, lístky jasně zelené, svěží. Vůně nálevu plná, čistá, barva světle zelená. Výrazná chuť dlouze ulpívá na patře, závěr je lehký, velmi příjemný.",
+                preparation: "Vodou o teplotě 80 °C zalejte čaj v poměru 12 g (cca 7 zarovnaných čajových lžiček) na 1 litr vody. Ponechte 2 minuty louhovat. Poté přeceďte. Možno připravit 2-3 nálevy."
             },
             {
                 name: "Tokajská Meruňka",
@@ -346,7 +385,9 @@
                 infusions: "Ne (1)",
                 multiInfusion: false,
                 caffeine: "Nízký",
-                caffeineLevel: 1
+                caffeineLevel: 1,
+                description: "Pravý zelený čaj Sencha a pravý bílý čaj Snow Buds s jemnou, lákavou chutí zralých meruněk. Harmonické spojení čajů s ovocnými tóny, které vás potěší svou svěžestí a jemností.",
+                preparation: "Vodou o teplotě 70 °C zalejte čaj v poměru 10 g (cca 7 zarovnaných čajových lžiček) na 1 litr vody. Ponechte 3 minuty louhovat. Poté přeceďte."
             },
             {
                 name: "Genmaicha Musashi",
@@ -360,7 +401,9 @@
                 infusions: "Ano (1–2)",
                 multiInfusion: true,
                 caffeine: "Nízký",
-                caffeineLevel: 1
+                caffeineLevel: 1,
+                description: "Lístky výtečného čaje Sencha jsou smíchány s praženou rýží. Genmaicha má půvabnou, lehce nasládlou, ořechovou chuť. Barva nálevu je zlatozelená. Musashi je jméno nejslavnějšího japonského samuraje.",
+                preparation: "Vodou o teplotě 90 °C zalejte čaj v poměru 12 g (cca 7 zarovnaných čajových lžiček) na 1 litr vody. Ponechte 1,5 minuty louhovat. Poté přeceďte. Možno připravit 1-2 nálevy."
             },
             {
                 name: "White Monkey",
@@ -374,7 +417,9 @@
                 infusions: "Ano (2–3)",
                 multiInfusion: true,
                 caffeine: "Střední",
-                caffeineLevel: 2
+                caffeineLevel: 2,
+                description: "Tradiční čínský zelený čaj, jehož dlouhé listy jsou ručně svinované do charakteristického tvaru. Vytváří světlý nálev s jemnou vůní a lahodně vyváženou chutí. Oblíbený pro svou lehkost a delikátní čajový charakter.",
+                preparation: "Vodou o teplotě 70-80 °C zalejte čaj v poměru 12 g (cca 6 zarovnaných čajových lžiček) na 1 litr vody. Ponechte 2-3 minut louhovat. Poté přeceďte. Možno připravit 3 nálevy."
             },
             {
                 name: "Myanmar Red Mt.",
@@ -388,7 +433,9 @@
                 infusions: "Ano (2–3)",
                 multiInfusion: true,
                 caffeine: "Střední",
-                caffeineLevel: 2
+                caffeineLevel: 2,
+                description: "Čaj se produkuje v oblasti Pindaya z čajovníků ve stáří od 25 až do 100 let v nadmořské výšce okolo 1200 metrů. Více než 50 % obyvatel tohoto regionu si vydělává na živobytí právě pěstováním čaje. Převážně zavinuté listy stříbřitě zelené barvy dávají po zalití sytě žlutý nálev. V chuti převažují sušená jablka a umami s lehkým kouřovým tónem.",
+                preparation: "Vodou o teplotě 70-80 °C zalejte čaj v poměru 12 g (cca 6 zarovnaných čajových lžiček) na 1 litr vody. Ponechte 2-3 minut louhovat. Poté přeceďte. Možno připravit 2-3 nálevy."
             },
             {
                 name: "Masala Chai",
@@ -402,7 +449,9 @@
                 infusions: "Ne (1)",
                 multiInfusion: false,
                 caffeine: "Střední",
-                caffeineLevel: 2
+                caffeineLevel: 2,
+                description: "Tradiční indický čaj Masala Chai v sypané podobě. Kombinace pravého černého čaje a aromatického koření - kardamomu, skořice a hřebíčku - vytváří silný, kořeněný nálev s nezaměnitelnou vůní a chutí. Skvělý samotný nebo s mlékem a cukrem podle klasického indického receptu.",
+                preparation: "Vroucí vodou zalejte čaj v poměru 8 g (cca 5 zarovnaných čajových lžiček) na 1 litr vody. Ponechte 3 minuty louhovat. Poté přeceďte. Pravý indický Masala Chai: dejte vařit 100 ml vody s 1 lžičkou cukru a 1 lžící čaje. Jakmile směs začne vřít přidejte 300 ml horkého mléka a opět přiveďte k varu. Následně na 3 minuty odstavte a poté přeceďte."
             }
         ];
 
@@ -433,6 +482,7 @@
                     </div>
                     <h2 class="modal-name">${tea.name}</h2>
                     <p class="modal-origin">${tea.flag} ${tea.origin}</p>
+                    <p class="modal-description">${tea.description}</p>
                 </div>
                 <div class="modal-body">
                     <div class="detail-grid">
@@ -455,7 +505,7 @@
                             <div class="detail-icon">☕</div>
                             <div class="detail-value">${tea.caffeine}</div>
                             <div class="detail-label">Obsah kofeinu</div>
-                            <div class="caffeine-indicator" style="margin-top: 8px;">
+                            <div class="caffeine-indicator" style="margin-top: 6px;">
                                 <div class="caffeine-dot ${tea.caffeineLevel >= 1 ? 'active ' + caffeineClass : ''}"></div>
                                 <div class="caffeine-dot ${tea.caffeineLevel >= 2 ? 'active ' + caffeineClass : ''}"></div>
                                 <div class="caffeine-dot ${tea.caffeineLevel >= 3 ? 'active ' + caffeineClass : ''}"></div>
@@ -470,6 +520,10 @@
                             </div>
                             <div class="detail-label">Více nálevů</div>
                         </div>
+                    </div>
+                    <div class="preparation-section">
+                        <div class="preparation-title">📋 Příprava</div>
+                        <p class="preparation-text">${tea.preparation}</p>
                     </div>
                 </div>
             `;
