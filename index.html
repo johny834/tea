@@ -435,44 +435,74 @@
             .container { padding: 40px 16px 80px; }
         }
         
-        /* Timer styles */
-        .timer-section {
-            margin-top: 20px;
-            text-align: center;
+        /* Timer styles - integrated into spec card */
+        .spec-timer {
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
         }
         
-        .timer-container {
+        .spec-timer:hover {
+            background: var(--surface-hover);
+            transform: scale(1.02);
+        }
+        
+        .spec-timer::after {
+            content: '▶';
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            font-size: 8px;
+            color: var(--accent);
+            opacity: 0.6;
+            transition: opacity 0.2s;
+        }
+        
+        .spec-timer:hover::after {
+            opacity: 1;
+        }
+        
+        .spec-timer.active {
+            grid-column: span 3;
+            padding: 24px 16px;
+        }
+        
+        .spec-timer.active::after {
+            display: none;
+        }
+        
+        .timer-inline {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 16px;
+            width: 100%;
         }
         
-        .timer-circle {
+        .timer-circle-small {
             position: relative;
-            width: 160px;
-            height: 160px;
+            width: 100px;
+            height: 100px;
         }
         
         .timer-svg {
             transform: rotate(-90deg);
-            width: 160px;
-            height: 160px;
+            width: 100%;
+            height: 100%;
         }
         
         .timer-bg {
             fill: none;
             stroke: var(--border);
-            stroke-width: 8;
+            stroke-width: 6;
         }
         
         .timer-progress {
             fill: none;
             stroke: var(--accent);
-            stroke-width: 8;
+            stroke-width: 6;
             stroke-linecap: round;
-            stroke-dasharray: 440;
-            stroke-dashoffset: 0;
             transition: stroke-dashoffset 0.3s linear, stroke 0.3s ease;
         }
         
@@ -480,115 +510,78 @@
             stroke: var(--warm);
         }
         
-        .timer-progress.done {
-            stroke: var(--accent);
-        }
-        
-        .timer-display {
+        .timer-display-small {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             font-family: 'Cormorant Garamond', serif;
-            font-size: 2.5rem;
+            font-size: 1.5rem;
             font-weight: 500;
             color: var(--text);
         }
         
-        .timer-done-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
+        .timer-done-inline {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             animation: timerPulse 1.5s ease-in-out infinite;
         }
         
-        .timer-done-text .done-icon {
-            font-size: 2.5rem;
-            display: block;
-            margin-bottom: 4px;
+        .timer-done-inline .done-icon {
+            font-size: 2rem;
         }
         
-        .timer-done-text .done-label {
-            font-size: 0.85rem;
+        .timer-done-inline .done-label {
+            font-size: 0.75rem;
             font-weight: 500;
             color: var(--accent);
             text-transform: uppercase;
             letter-spacing: 0.05em;
+            margin-top: 4px;
         }
         
         @keyframes timerPulse {
-            0%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-            50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.05); }
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
         }
         
-        .timer-controls {
+        .timer-controls-inline {
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
         
-        .timer-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 12px 24px;
+        .timer-btn-small {
+            padding: 8px 16px;
             border-radius: 100px;
             border: none;
             font-family: 'DM Sans', sans-serif;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
         
-        .timer-btn.primary {
+        .timer-btn-small.primary {
             background: var(--accent);
             color: white;
         }
         
-        .timer-btn.primary:hover {
+        .timer-btn-small.primary:hover {
             filter: brightness(1.1);
-            transform: translateY(-1px);
         }
         
-        .timer-btn.secondary {
+        .timer-btn-small.secondary {
             background: var(--border);
             color: var(--text);
         }
         
-        .timer-btn.secondary:hover {
+        .timer-btn-small.secondary:hover {
             background: var(--border-hover);
         }
         
-        .timer-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .start-timer-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 10px 20px;
-            background: var(--accent-soft);
-            color: var(--accent);
-            border: 1px solid transparent;
-            border-radius: 100px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 16px;
-        }
-        
-        .start-timer-btn:hover {
-            background: var(--accent);
-            color: white;
-            transform: translateY(-1px);
+        @media (max-width: 640px) {
+            .spec-timer.active { grid-column: span 2; }
         }
     </style>
 </head>
@@ -892,10 +885,10 @@
                             <div class="spec-value">${tea.temp}</div>
                             <div class="spec-label">${t('temp')}</div>
                         </div>
-                        <div class="spec" style="cursor: pointer;" onclick="showTimer(${index})" title="${t('startTimer')}">
+                        <div class="spec spec-timer" id="steepingSpec" onclick="toggleTimerMode(${index})">
                             <div class="spec-icon">⏱</div>
-                            <div class="spec-value">${tea.time}</div>
-                            <div class="spec-label">${t('steeping')}</div>
+                            <div class="spec-value" id="steepingValue">${tea.time}</div>
+                            <div class="spec-label" id="steepingLabel">${t('steeping')}</div>
                         </div>
                         <div class="spec">
                             <div class="spec-icon">⚖</div>
@@ -915,12 +908,6 @@
                     <div class="prep-section">
                         <div class="prep-title">${t('preparation')}</div>
                         <p class="prep-text">${tea.prep[lang]}</p>
-                    </div>
-                    
-                    <div class="timer-section" id="timerSection">
-                        <button class="start-timer-btn" onclick="showTimer(${index})">
-                            ${t('startTimer')}
-                        </button>
                     </div>
                 </div>
             `;
@@ -960,17 +947,18 @@
             interval: null,
             isRunning: false,
             isDone: false,
-            currentTeaIndex: null
+            isActive: false,
+            currentTeaIndex: null,
+            originalTime: ''
         };
 
         function parseTime(timeStr) {
-            // Parse time strings like "3 min", "1.5 min", "2–3 min"
             const match = timeStr.match(/(\d+(?:[.,]\d+)?)/);
             if (match) {
                 const minutes = parseFloat(match[1].replace(',', '.'));
                 return Math.round(minutes * 60);
             }
-            return 180; // Default 3 minutes
+            return 180;
         }
 
         function formatTime(seconds) {
@@ -979,42 +967,44 @@
             return `${mins}:${secs.toString().padStart(2, '0')}`;
         }
 
-        function showTimer(teaIndex) {
+        function toggleTimerMode(teaIndex) {
+            const spec = document.getElementById('steepingSpec');
             const tea = teas[teaIndex];
-            timerState.totalSeconds = parseTime(tea.time);
-            timerState.remainingSeconds = timerState.totalSeconds;
-            timerState.isRunning = false;
-            timerState.isDone = false;
-            timerState.currentTeaIndex = teaIndex;
             
-            if (timerState.interval) {
-                clearInterval(timerState.interval);
-                timerState.interval = null;
+            if (!timerState.isActive) {
+                // Activate timer mode
+                timerState.totalSeconds = parseTime(tea.time);
+                timerState.remainingSeconds = timerState.totalSeconds;
+                timerState.originalTime = tea.time;
+                timerState.isActive = true;
+                timerState.isDone = false;
+                timerState.currentTeaIndex = teaIndex;
+                
+                spec.classList.add('active');
+                renderInlineTimer();
+                startTimer();
             }
-            
-            renderTimer();
-            startTimer();
         }
 
-        function renderTimer() {
-            const section = document.getElementById('timerSection');
-            const circumference = 2 * Math.PI * 70; // radius = 70
+        function renderInlineTimer() {
+            const spec = document.getElementById('steepingSpec');
+            const circumference = 2 * Math.PI * 40; // radius = 40
             
-            section.innerHTML = `
-                <div class="timer-container">
-                    <div class="timer-circle">
-                        <svg class="timer-svg" viewBox="0 0 160 160">
-                            <circle class="timer-bg" cx="80" cy="80" r="70"></circle>
-                            <circle class="timer-progress" id="timerProgress" cx="80" cy="80" r="70" 
+            spec.innerHTML = `
+                <div class="timer-inline">
+                    <div class="timer-circle-small">
+                        <svg class="timer-svg" viewBox="0 0 100 100">
+                            <circle class="timer-bg" cx="50" cy="50" r="40"></circle>
+                            <circle class="timer-progress" id="timerProgress" cx="50" cy="50" r="40" 
                                     style="stroke-dasharray: ${circumference}; stroke-dashoffset: 0;"></circle>
                         </svg>
-                        <div class="timer-display" id="timerDisplay">${formatTime(timerState.remainingSeconds)}</div>
+                        <div class="timer-display-small" id="timerDisplay">${formatTime(timerState.remainingSeconds)}</div>
                     </div>
-                    <div class="timer-controls" id="timerControls">
-                        <button class="timer-btn primary" id="timerMainBtn" onclick="toggleTimer()">
+                    <div class="timer-controls-inline">
+                        <button class="timer-btn-small primary" id="timerMainBtn" onclick="event.stopPropagation(); toggleTimer();">
                             ${t('pause')}
                         </button>
-                        <button class="timer-btn secondary" onclick="resetTimer()">
+                        <button class="timer-btn-small secondary" onclick="event.stopPropagation(); resetTimer();">
                             ${t('reset')}
                         </button>
                     </div>
@@ -1026,20 +1016,20 @@
             const display = document.getElementById('timerDisplay');
             const progress = document.getElementById('timerProgress');
             const mainBtn = document.getElementById('timerMainBtn');
-            const circumference = 2 * Math.PI * 70;
+            const circumference = 2 * Math.PI * 40;
             
             if (timerState.isDone) {
-                display.outerHTML = `
-                    <div class="timer-done-text" id="timerDisplay">
-                        <span class="done-icon">🍵</span>
-                        <span class="done-label">${t('extractionDone')}</span>
-                    </div>
-                `;
-                progress.classList.add('done');
-                progress.style.strokeDashoffset = '0';
-                mainBtn.style.display = 'none';
+                const circle = document.querySelector('.timer-circle-small');
+                if (circle) {
+                    circle.outerHTML = `
+                        <div class="timer-done-inline">
+                            <span class="done-icon">🍵</span>
+                            <span class="done-label">${t('extractionDone')}</span>
+                        </div>
+                    `;
+                }
+                if (mainBtn) mainBtn.style.display = 'none';
                 
-                // Play a subtle notification if supported
                 if ('vibrate' in navigator) {
                     navigator.vibrate([200, 100, 200]);
                 }
@@ -1054,7 +1044,6 @@
                 const offset = circumference * (1 - timerState.remainingSeconds / timerState.totalSeconds);
                 progress.style.strokeDashoffset = offset;
                 
-                // Add warning color when less than 10 seconds
                 if (timerState.remainingSeconds <= 10 && timerState.remainingSeconds > 0) {
                     progress.classList.add('warning');
                 } else {
@@ -1112,10 +1101,21 @@
                 clearInterval(timerState.interval);
                 timerState.interval = null;
             }
-            timerState.remainingSeconds = timerState.totalSeconds;
+            
+            const spec = document.getElementById('steepingSpec');
+            const tea = teas[timerState.currentTeaIndex];
+            
+            // Reset to original display
+            timerState.isActive = false;
             timerState.isRunning = false;
             timerState.isDone = false;
-            renderTimer();
+            spec.classList.remove('active');
+            
+            spec.innerHTML = `
+                <div class="spec-icon">⏱</div>
+                <div class="spec-value" id="steepingValue">${tea.time}</div>
+                <div class="spec-label" id="steepingLabel">${t('steeping')}</div>
+            `;
         }
 
         // Clean up timer when modal closes
@@ -1126,6 +1126,8 @@
                 timerState.interval = null;
             }
             timerState.isRunning = false;
+            timerState.isActive = false;
+            timerState.isDone = false;
             originalCloseDetail();
         };
 
