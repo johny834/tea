@@ -2,170 +2,246 @@
 <html lang="cs">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0a0a0a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Čajovna</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="mask-icon" href="favicon.svg" color="#7c9a6e">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         
         :root {
-            --bg: #0c0c0c;
-            --surface: #151515;
-            --surface-hover: #1c1c1c;
-            --text: #ececec;
-            --text-secondary: #8a8a8a;
-            --accent: #7c9a6e;
-            --accent-soft: rgba(124, 154, 110, 0.12);
+            --bg: #0a0a0a;
+            --bg-elevated: #111111;
+            --surface: #161616;
+            --surface-elevated: #1a1a1a;
+            --surface-hover: #1f1f1f;
+            --text: #f5f5f4;
+            --text-secondary: #a3a3a3;
+            --text-tertiary: #737373;
+            --accent: #8fa87f;
+            --accent-light: #a3b899;
+            --accent-soft: rgba(143, 168, 127, 0.12);
+            --accent-glow: rgba(143, 168, 127, 0.25);
+            --gold: #c9a962;
+            --gold-soft: rgba(201, 169, 98, 0.12);
             --warm: #c4956a;
             --warm-soft: rgba(196, 149, 106, 0.12);
             --border: rgba(255,255,255,0.06);
-            --border-hover: rgba(255,255,255,0.12);
+            --border-subtle: rgba(255,255,255,0.03);
+            --border-hover: rgba(255,255,255,0.1);
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.4), 0 1px 3px rgba(0,0,0,0.3);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3);
+            --shadow-xl: 0 16px 48px rgba(0,0,0,0.6), 0 4px 16px rgba(0,0,0,0.4);
+            --radius-sm: 12px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 32px;
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
         }
         
         [data-theme="light"] {
-            --bg: #faf9f7;
+            --bg: #f8f7f5;
+            --bg-elevated: #ffffff;
             --surface: #ffffff;
-            --surface-hover: #f5f4f2;
+            --surface-elevated: #ffffff;
+            --surface-hover: #f3f2f0;
             --text: #1a1a1a;
-            --text-secondary: #6b6b6b;
-            --accent: #5a7a4c;
-            --accent-soft: rgba(90, 122, 76, 0.08);
-            --warm: #a67c52;
-            --warm-soft: rgba(166, 124, 82, 0.08);
+            --text-secondary: #525252;
+            --text-tertiary: #a3a3a3;
+            --accent: #6b8c5a;
+            --accent-light: #7a9d68;
+            --accent-soft: rgba(107, 140, 90, 0.1);
+            --accent-glow: rgba(107, 140, 90, 0.2);
+            --gold: #a68a3c;
+            --gold-soft: rgba(166, 138, 60, 0.1);
+            --warm: #9d7650;
+            --warm-soft: rgba(157, 118, 80, 0.1);
             --border: rgba(0,0,0,0.06);
+            --border-subtle: rgba(0,0,0,0.03);
             --border-hover: rgba(0,0,0,0.1);
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06);
+            --shadow-xl: 0 16px 48px rgba(0,0,0,0.12), 0 4px 16px rgba(0,0,0,0.08);
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
         }
         
         body {
-            font-family: 'DM Sans', -apple-system, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg);
             color: var(--text);
             min-height: 100vh;
+            min-height: 100dvh;
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
         }
         
+        /* Subtle animated gradient background */
+        .bg-gradient {
+            position: fixed;
+            inset: 0;
+            background: 
+                radial-gradient(ellipse 80% 50% at 50% -20%, var(--accent-soft), transparent),
+                radial-gradient(ellipse 60% 40% at 100% 100%, var(--gold-soft), transparent);
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* Premium noise texture */
         .noise {
             position: fixed;
             inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity: 0.025;
             pointer-events: none;
-            z-index: 1000;
+            z-index: 1;
         }
         
         .container {
-            max-width: 1000px;
+            position: relative;
+            z-index: 2;
+            max-width: 960px;
             margin: 0 auto;
-            padding: 60px 24px 100px;
+            padding: calc(32px + var(--safe-top)) 20px calc(40px + var(--safe-bottom));
         }
         
+        /* Header */
         header {
-            margin-bottom: 64px;
+            margin-bottom: 48px;
         }
         
         .header-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 48px;
+            margin-bottom: 56px;
         }
         
         .logo {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.1rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 0.875rem;
             font-weight: 500;
-            letter-spacing: 0.15em;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
-            color: var(--text-secondary);
+            color: var(--text-tertiary);
+            transition: color 0.3s ease;
         }
         
         .header-controls {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             align-items: center;
         }
         
         .toggle-btn {
-            height: 40px;
-            border-radius: 20px;
+            height: 44px;
+            min-width: 44px;
+            border-radius: 22px;
             background: var(--surface);
             border: 1px solid var(--border);
             cursor: pointer;
-            font-size: 13px;
+            font-size: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             color: var(--text);
-            font-family: 'DM Sans', sans-serif;
+            font-family: 'Inter', sans-serif;
             font-weight: 500;
+            box-shadow: var(--shadow-sm);
+            -webkit-tap-highlight-color: transparent;
         }
         
         .toggle-btn:hover {
+            background: var(--surface-hover);
             border-color: var(--border-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .toggle-btn:active {
+            transform: translateY(0);
         }
         
         .theme-toggle {
-            width: 40px;
-            font-size: 16px;
-        }
-        
-        .theme-toggle:hover {
-            transform: rotate(20deg);
+            font-size: 18px;
         }
         
         .lang-toggle {
-            padding: 0 16px;
-            gap: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            padding: 0 18px;
+            font-size: 12px;
+            letter-spacing: 0.08em;
         }
         
+        /* Hero */
         .hero {
             text-align: center;
-        }
-        
-        .hero h1 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(2.5rem, 8vw, 4.5rem);
-            font-weight: 400;
-            line-height: 1.1;
-            margin-bottom: 20px;
-            letter-spacing: -0.02em;
-        }
-        
-        .hero h1 em {
-            font-style: italic;
-            color: var(--accent);
-        }
-        
-        .hero p {
-            color: var(--text-secondary);
-            font-size: 1rem;
-            max-width: 400px;
-            margin: 0 auto;
+            padding: 0 8px;
         }
         
         .collection-label {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background: var(--accent-soft);
+            gap: 10px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--gold-soft), var(--accent-soft));
+            border: 1px solid var(--border);
             border-radius: 100px;
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--accent);
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--gold);
             text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin-bottom: 40px;
+            letter-spacing: 0.12em;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-sm);
         }
         
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.75rem, 10vw, 5rem);
+            font-weight: 400;
+            line-height: 1.05;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+            background: linear-gradient(180deg, var(--text), var(--text-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero h1 em {
+            font-style: italic;
+            background: linear-gradient(135deg, var(--accent-light), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 360px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+        
+        /* Tea Grid */
         .tea-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -173,31 +249,52 @@
         }
         
         .tea-card {
+            position: relative;
             background: var(--surface);
-            border-radius: 20px;
-            padding: 28px;
+            border-radius: var(--radius-lg);
+            padding: 24px;
             border: 1px solid var(--border);
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             overflow: hidden;
+            box-shadow: var(--shadow-md);
+            -webkit-tap-highlight-color: transparent;
         }
         
         .tea-card::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, var(--accent-soft), transparent);
+            background: linear-gradient(135deg, var(--accent-soft) 0%, transparent 60%);
             opacity: 0;
-            transition: opacity 0.4s ease;
+            transition: opacity 0.5s ease;
+        }
+        
+        .tea-card::after {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: var(--radius-lg);
+            padding: 1px;
+            background: linear-gradient(135deg, var(--accent), var(--gold));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.5s ease;
         }
         
         .tea-card:hover {
-            transform: translateY(-2px);
-            border-color: var(--border-hover);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl), 0 0 0 1px var(--border-hover);
         }
         
         .tea-card:hover::before { opacity: 1; }
+        .tea-card:hover::after { opacity: 0.5; }
+        
+        .tea-card:active {
+            transform: translateY(-2px) scale(0.99);
+        }
         
         .tea-card-inner {
             position: relative;
@@ -205,152 +302,192 @@
         }
         
         .tea-meta {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 14px;
+            margin-bottom: 16px;
         }
         
         .tea-type {
-            font-size: 11px;
-            font-weight: 500;
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: var(--text-secondary);
-            padding: 4px 10px;
+            letter-spacing: 0.08em;
+            color: var(--text-tertiary);
+            padding: 6px 12px;
             background: var(--border);
-            border-radius: 6px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
         }
         
         .tea-type.green { color: var(--accent); background: var(--accent-soft); }
         .tea-type.black { color: var(--warm); background: var(--warm-soft); }
-        .tea-type.blend { color: #9d7cd8; background: rgba(157, 124, 216, 0.1); }
+        .tea-type.blend { color: #b794d4; background: rgba(183, 148, 212, 0.12); }
         
         .tea-name {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.6rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
             font-weight: 500;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             line-height: 1.2;
+            letter-spacing: -0.01em;
         }
         
         .tea-origin {
-            color: var(--text-secondary);
+            color: var(--text-tertiary);
             font-size: 13px;
             margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
         
         .tea-quick {
             display: flex;
-            gap: 20px;
+            gap: 24px;
         }
         
         .tea-stat {
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 4px;
         }
         
         .tea-stat-value {
             font-size: 15px;
-            font-weight: 500;
+            font-weight: 600;
+            color: var(--text);
         }
         
         .tea-stat-label {
-            font-size: 11px;
-            color: var(--text-secondary);
+            font-size: 10px;
+            color: var(--text-tertiary);
             text-transform: uppercase;
-            letter-spacing: 0.04em;
+            letter-spacing: 0.06em;
         }
 
-        /* Modal */
+        /* Modal - Premium Bottom Sheet on Mobile */
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(20px);
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             z-index: 100;
-            display: none;
-            align-items: center;
+            display: flex;
+            align-items: flex-end;
             justify-content: center;
-            padding: 20px;
+            padding: 0;
             opacity: 0;
-            transition: opacity 0.3s ease;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
-        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-overlay.active { 
+            opacity: 1; 
+            visibility: visible;
+        }
         
         .modal {
             background: var(--surface);
-            border-radius: 28px;
-            max-width: 520px;
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
             width: 100%;
-            max-height: 85vh;
-            overflow-y: auto;
-            border: 1px solid var(--border);
-            transform: translateY(20px) scale(0.98);
-            opacity: 0;
-            animation: modalSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            max-width: 100%;
+            max-height: calc(95vh - var(--safe-top));
+            max-height: calc(95dvh - var(--safe-top));
+            overflow: hidden;
+            transform: translateY(100%);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: var(--shadow-xl);
+            display: flex;
+            flex-direction: column;
         }
         
-        @keyframes modalSlide {
-            to { transform: translateY(0) scale(1); opacity: 1; }
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+        
+        .modal-drag-handle {
+            width: 36px;
+            height: 4px;
+            background: var(--border-hover);
+            border-radius: 2px;
+            margin: 12px auto 8px;
+            flex-shrink: 0;
+        }
+        
+        .modal-scroll {
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
+            flex: 1;
         }
         
         .modal-header {
-            padding: 32px 32px 24px;
+            padding: 16px 24px 20px;
             position: relative;
         }
         
         .modal-close {
             position: absolute;
-            top: 20px;
+            top: 16px;
             right: 20px;
             background: var(--border);
             border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
             color: var(--text-secondary);
-            font-size: 18px;
+            font-size: 20px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
         }
         
-        .modal-close:hover { background: var(--border-hover); color: var(--text); }
+        .modal-close:hover { 
+            background: var(--border-hover); 
+            color: var(--text); 
+            transform: scale(1.05);
+        }
         
         .modal-type {
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
         
         .modal-name {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2.2rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
             font-weight: 500;
             line-height: 1.15;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
+            padding-right: 48px;
         }
         
         .modal-origin {
             color: var(--text-secondary);
             font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         .modal-desc {
             margin-top: 20px;
             padding-top: 20px;
             border-top: 1px solid var(--border);
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.15rem;
-            line-height: 1.7;
-            color: var(--text);
+            font-family: 'Playfair Display', serif;
+            font-size: 1.125rem;
+            line-height: 1.75;
+            color: var(--text-secondary);
             font-style: italic;
         }
         
         .modal-body {
-            padding: 0 32px 32px;
+            padding: 0 24px calc(24px + var(--safe-bottom));
         }
         
+        /* Specs Grid */
         .specs-row {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -360,46 +497,82 @@
         
         .spec {
             background: var(--bg);
-            border-radius: 14px;
-            padding: 16px 12px;
+            border-radius: var(--radius-md);
+            padding: 20px 16px;
             text-align: center;
+            border: 1px solid var(--border-subtle);
+            transition: all 0.3s ease;
         }
         
-        .spec-icon { font-size: 22px; margin-bottom: 8px; }
-        .spec-value { font-size: 1rem; font-weight: 500; margin-bottom: 2px; }
-        .spec-label { font-size: 10px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
+        .spec-icon { 
+            font-size: 28px; 
+            margin-bottom: 10px;
+            filter: grayscale(0.2);
+        }
+        .spec-value { 
+            font-size: 1.125rem; 
+            font-weight: 600; 
+            margin-bottom: 4px;
+            color: var(--text);
+        }
+        .spec-label { 
+            font-size: 10px; 
+            color: var(--text-tertiary); 
+            text-transform: uppercase; 
+            letter-spacing: 0.08em;
+            font-weight: 500;
+        }
         
+        /* Steeping Timer Row */
         .steeping-row {
-            background: var(--accent-soft);
-            border-radius: 14px;
-            padding: 16px 20px;
+            background: linear-gradient(135deg, var(--accent-soft), var(--gold-soft));
+            border-radius: var(--radius-md);
+            padding: 20px 24px;
             margin-bottom: 12px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
         }
         
-        .steeping-row:hover {
-            background: var(--accent);
-            border-color: var(--accent);
+        .steeping-row::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .steeping-row:hover::before,
+        .steeping-row:active::before {
+            opacity: 1;
         }
         
         .steeping-row:hover .steeping-icon,
         .steeping-row:hover .steeping-value,
         .steeping-row:hover .steeping-label,
-        .steeping-row:hover .steeping-action {
+        .steeping-row:hover .steeping-action,
+        .steeping-row:active .steeping-icon,
+        .steeping-row:active .steeping-value,
+        .steeping-row:active .steeping-label,
+        .steeping-row:active .steeping-action {
             color: white;
         }
         
         .steeping-content {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 20px;
+            position: relative;
+            z-index: 1;
         }
         
         .steeping-icon {
-            font-size: 28px;
-            transition: color 0.3s;
+            font-size: 32px;
+            transition: all 0.3s ease;
         }
         
         .steeping-info {
@@ -407,122 +580,148 @@
         }
         
         .steeping-value {
-            font-size: 1.25rem;
-            font-weight: 500;
+            font-size: 1.375rem;
+            font-weight: 600;
             margin-bottom: 2px;
-            transition: color 0.3s;
+            transition: color 0.3s ease;
         }
         
         .steeping-label {
             font-size: 11px;
-            color: var(--text-secondary);
+            color: var(--text-tertiary);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            transition: color 0.3s;
+            letter-spacing: 0.08em;
+            font-weight: 500;
+            transition: color 0.3s ease;
         }
         
         .steeping-action {
+            width: 44px;
+            height: 44px;
+            border-radius: 22px;
+            background: var(--surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 14px;
             color: var(--accent);
-            transition: color 0.3s;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .steeping-row:hover .steeping-action,
+        .steeping-row:active .steeping-action {
+            background: rgba(255,255,255,0.2);
+            color: white;
         }
         
         .steeping-row.active {
             background: var(--bg);
-            padding: 24px 20px;
+            padding: 24px;
         }
         
-        .steeping-row.active:hover {
-            background: var(--bg);
-        }
+        .steeping-row.active::before { display: none; }
         
+        /* Extras Row */
         .extras-row {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 12px;
-            padding: 14px;
+            justify-content: space-between;
+            padding: 18px 20px;
             background: var(--bg);
-            border-radius: 14px;
-            margin-bottom: 24px;
+            border-radius: var(--radius-md);
+            margin-bottom: 20px;
+            border: 1px solid var(--border-subtle);
+        }
+        
+        .extras-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .extras-label {
+            font-size: 10px;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 500;
         }
         
         .caffeine-dots {
             display: flex;
-            gap: 4px;
+            gap: 5px;
         }
         
         .caffeine-dot {
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             background: var(--border);
+            transition: all 0.3s ease;
         }
         
-        .caffeine-dot.active { background: var(--accent); }
-        .caffeine-dot.active.high { background: var(--warm); }
+        .caffeine-dot.active { background: var(--accent); box-shadow: 0 0 8px var(--accent-glow); }
+        .caffeine-dot.active.high { background: var(--warm); box-shadow: 0 0 8px var(--warm-soft); }
         
         .infusion-tag {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 6px 14px;
+            padding: 8px 14px;
             border-radius: 100px;
-            font-size: 13px;
-            font-weight: 500;
+            font-size: 12px;
+            font-weight: 600;
         }
         
         .infusion-tag.yes { background: var(--accent-soft); color: var(--accent); }
-        .infusion-tag.no { background: var(--border); color: var(--text-secondary); }
+        .infusion-tag.no { background: var(--border); color: var(--text-tertiary); }
         
+        /* Prep Section */
         .prep-section {
             background: var(--bg);
-            border-radius: 16px;
-            padding: 20px;
+            border-radius: var(--radius-md);
+            padding: 24px;
+            border: 1px solid var(--border-subtle);
         }
         
         .prep-title {
-            font-size: 11px;
-            font-weight: 500;
+            font-size: 10px;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--text-secondary);
-            margin-bottom: 10px;
+            letter-spacing: 0.1em;
+            color: var(--text-tertiary);
+            margin-bottom: 12px;
         }
         
         .prep-text {
             font-size: 14px;
-            line-height: 1.7;
-            color: var(--text);
+            line-height: 1.8;
+            color: var(--text-secondary);
         }
         
+        /* Footer */
         footer {
             text-align: center;
-            margin-top: 80px;
-            color: var(--text-secondary);
+            margin-top: 64px;
+            padding-bottom: 20px;
+            color: var(--text-tertiary);
             font-size: 12px;
+            letter-spacing: 0.02em;
         }
         
-        @media (max-width: 640px) {
-            .tea-grid { grid-template-columns: 1fr; }
-            .container { padding: 40px 16px 80px; }
-            .timer-content { flex-direction: column; text-align: center; }
-            .timer-info { width: 100%; }
-            .timer-controls { justify-content: center; }
-        }
-        
-        /* Timer styles */
+        /* Timer Styles */
         .timer-content {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 24px;
             width: 100%;
         }
         
         .timer-circle {
             position: relative;
-            width: 80px;
-            height: 80px;
+            width: 88px;
+            height: 88px;
             flex-shrink: 0;
         }
         
@@ -535,19 +734,21 @@
         .timer-bg {
             fill: none;
             stroke: var(--border);
-            stroke-width: 5;
+            stroke-width: 4;
         }
         
         .timer-progress {
             fill: none;
             stroke: var(--accent);
-            stroke-width: 5;
+            stroke-width: 4;
             stroke-linecap: round;
             transition: stroke-dashoffset 0.3s linear, stroke 0.3s ease;
+            filter: drop-shadow(0 0 6px var(--accent-glow));
         }
         
         .timer-progress.warning {
             stroke: var(--warm);
+            filter: drop-shadow(0 0 6px var(--warm-soft));
         }
         
         .timer-display {
@@ -555,8 +756,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.3rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
             font-weight: 500;
             color: var(--text);
         }
@@ -567,35 +768,39 @@
         
         .timer-status {
             font-size: 11px;
-            color: var(--text-secondary);
+            color: var(--text-tertiary);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 8px;
+            letter-spacing: 0.08em;
+            font-weight: 500;
+            margin-bottom: 12px;
         }
         
         .timer-controls {
             display: flex;
-            gap: 8px;
+            gap: 10px;
         }
         
         .timer-btn {
-            padding: 10px 18px;
+            padding: 12px 22px;
             border-radius: 100px;
             border: none;
-            font-family: 'DM Sans', sans-serif;
+            font-family: 'Inter', sans-serif;
             font-size: 13px;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-tap-highlight-color: transparent;
         }
         
         .timer-btn.primary {
-            background: var(--accent);
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
             color: white;
+            box-shadow: 0 4px 12px var(--accent-glow);
         }
         
         .timer-btn.primary:hover {
-            filter: brightness(1.1);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px var(--accent-glow);
         }
         
         .timer-btn.secondary {
@@ -610,27 +815,158 @@
         .timer-done {
             display: flex;
             align-items: center;
-            gap: 12px;
-            animation: timerPulse 1.5s ease-in-out infinite;
+            gap: 16px;
+            animation: timerPulse 2s ease-in-out infinite;
         }
         
         .timer-done .done-icon {
-            font-size: 2.5rem;
+            font-size: 3rem;
         }
         
         .timer-done .done-text {
-            font-size: 1.1rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
             font-weight: 500;
             color: var(--accent);
         }
         
         @keyframes timerPulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.9; transform: scale(1.02); }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        /* Desktop Styles */
+        @media (min-width: 768px) {
+            .container {
+                padding: 60px 32px 80px;
+            }
+            
+            header {
+                margin-bottom: 64px;
+            }
+            
+            .header-top {
+                margin-bottom: 72px;
+            }
+            
+            .hero h1 {
+                margin-bottom: 28px;
+            }
+            
+            .tea-grid {
+                gap: 20px;
+            }
+            
+            .tea-card {
+                padding: 32px;
+            }
+            
+            .tea-name {
+                font-size: 1.625rem;
+            }
+            
+            /* Desktop Modal - Centered */
+            .modal-overlay {
+                align-items: center;
+                padding: 24px;
+            }
+            
+            .modal {
+                border-radius: var(--radius-xl);
+                max-width: 540px;
+                max-height: 85vh;
+                transform: translateY(24px) scale(0.96);
+                opacity: 0;
+            }
+            
+            .modal-overlay.active .modal {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            
+            .modal-drag-handle {
+                display: none;
+            }
+            
+            .modal-header {
+                padding: 32px 32px 24px;
+            }
+            
+            .modal-body {
+                padding: 0 32px 32px;
+            }
+            
+            .modal-name {
+                font-size: 2.25rem;
+            }
+        }
+        
+        /* Mobile Optimizations */
+        @media (max-width: 767px) {
+            .tea-grid { 
+                grid-template-columns: 1fr; 
+                gap: 14px;
+            }
+            
+            .tea-card {
+                padding: 22px;
+            }
+            
+            .tea-name {
+                font-size: 1.375rem;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .timer-content { 
+                flex-direction: column; 
+                text-align: center; 
+            }
+            
+            .timer-info { 
+                width: 100%; 
+            }
+            
+            .timer-controls { 
+                justify-content: center; 
+            }
+            
+            .extras-row {
+                flex-direction: column;
+                gap: 16px;
+            }
+            
+            .extras-group {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        
+        /* Custom Scrollbar */
+        @media (pointer: fine) {
+            ::-webkit-scrollbar {
+                width: 8px;
+            }
+            
+            ::-webkit-scrollbar-track {
+                background: transparent;
+            }
+            
+            ::-webkit-scrollbar-thumb {
+                background: var(--border);
+                border-radius: 4px;
+            }
+            
+            ::-webkit-scrollbar-thumb:hover {
+                background: var(--border-hover);
+            }
         }
     </style>
 </head>
 <body>
+    <div class="bg-gradient"></div>
     <div class="noise"></div>
     
     <div class="container">
@@ -677,7 +1013,7 @@
                 preparation: 'Příprava',
                 types: { green: 'Zelený', black: 'Černý', blend: 'Směs' },
                 origins: { India: 'Indie', China: 'Čína', Japan: 'Japonsko', Myanmar: 'Myanmar' },
-                startTimer: '▶ Spustit časovač',
+                startTimer: 'Spustit',
                 pause: 'Pauza',
                 resume: 'Pokračovat',
                 reset: 'Znovu',
@@ -698,7 +1034,7 @@
                 preparation: 'Preparation',
                 types: { green: 'Green', black: 'Black', blend: 'Blend' },
                 origins: { India: 'India', China: 'China', Japan: 'Japan', Myanmar: 'Myanmar' },
-                startTimer: '▶ Start Timer',
+                startTimer: 'Start',
                 pause: 'Pause',
                 resume: 'Resume',
                 reset: 'Reset',
@@ -914,50 +1250,56 @@
             const caffeineClass = tea.caffeine >= 2 ? 'high' : '';
             
             document.getElementById('modal').innerHTML = `
-                <div class="modal-header">
-                    <button class="modal-close" onclick="closeDetail()">×</button>
-                    <div class="modal-type">
-                        <span class="tea-type ${tea.type}">${t('types')[tea.type]}</span>
-                    </div>
-                    <h2 class="modal-name">${lang === 'cs' ? tea.name : tea.nameEn}</h2>
-                    <p class="modal-origin">${tea.flag} ${t('origins')[tea.origin]}</p>
-                    <p class="modal-desc">"${tea.desc[lang]}"</p>
-                </div>
-                <div class="modal-body">
-                    <div class="specs-row">
-                        <div class="spec">
-                            <div class="spec-icon">🌡</div>
-                            <div class="spec-value">${tea.temp}</div>
-                            <div class="spec-label">${t('temp')}</div>
+                <div class="modal-drag-handle"></div>
+                <div class="modal-scroll">
+                    <div class="modal-header">
+                        <button class="modal-close" onclick="closeDetail()">×</button>
+                        <div class="modal-type">
+                            <span class="tea-type ${tea.type}">${t('types')[tea.type]}</span>
                         </div>
-                        <div class="spec">
-                            <div class="spec-icon">⚖</div>
-                            <div class="spec-value">${tea.amount}</div>
-                            <div class="spec-label">${t('perLiter')}</div>
-                        </div>
+                        <h2 class="modal-name">${lang === 'cs' ? tea.name : tea.nameEn}</h2>
+                        <p class="modal-origin">${tea.flag} ${t('origins')[tea.origin]}</p>
+                        <p class="modal-desc">"${tea.desc[lang]}"</p>
                     </div>
-                    <div class="steeping-row" id="steepingSpec" onclick="toggleTimerMode(${index})">
-                        <div class="steeping-content">
-                            <div class="steeping-icon">⏱</div>
-                            <div class="steeping-info">
-                                <div class="steeping-value" id="steepingValue">${tea.time}</div>
-                                <div class="steeping-label" id="steepingLabel">${t('steeping')}</div>
+                    <div class="modal-body">
+                        <div class="specs-row">
+                            <div class="spec">
+                                <div class="spec-icon">🌡</div>
+                                <div class="spec-value">${tea.temp}</div>
+                                <div class="spec-label">${t('temp')}</div>
                             </div>
-                            <div class="steeping-action">▶</div>
+                            <div class="spec">
+                                <div class="spec-icon">⚖️</div>
+                                <div class="spec-value">${tea.amount}</div>
+                                <div class="spec-label">${t('perLiter')}</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="extras-row">
-                        <span class="spec-label">${t('caffeine')}</span>
-                        <div class="caffeine-dots">
-                            ${[1,2,3].map(n => `<div class="caffeine-dot ${n <= tea.caffeine ? 'active ' + caffeineClass : ''}"></div>`).join('')}
+                        <div class="steeping-row" id="steepingSpec" onclick="toggleTimerMode(${index})">
+                            <div class="steeping-content">
+                                <div class="steeping-icon">⏱</div>
+                                <div class="steeping-info">
+                                    <div class="steeping-value" id="steepingValue">${tea.time}</div>
+                                    <div class="steeping-label" id="steepingLabel">${t('steeping')}</div>
+                                </div>
+                                <div class="steeping-action">▶</div>
+                            </div>
                         </div>
-                        <span style="flex:1"></span>
-                        <span class="spec-label">${t('infusions')}</span>
-                        <span class="infusion-tag ${tea.infusions > 1 ? 'yes' : 'no'}">${tea.infusions > 1 ? '✓ ' + tea.infusions + '×' : '1×'}</span>
-                    </div>
-                    <div class="prep-section">
-                        <div class="prep-title">${t('preparation')}</div>
-                        <p class="prep-text">${tea.prep[lang]}</p>
+                        <div class="extras-row">
+                            <div class="extras-group">
+                                <span class="extras-label">${t('caffeine')}</span>
+                                <div class="caffeine-dots">
+                                    ${[1,2,3].map(n => `<div class="caffeine-dot ${n <= tea.caffeine ? 'active ' + caffeineClass : ''}"></div>`).join('')}
+                                </div>
+                            </div>
+                            <div class="extras-group">
+                                <span class="extras-label">${t('infusions')}</span>
+                                <span class="infusion-tag ${tea.infusions > 1 ? 'yes' : 'no'}">${tea.infusions > 1 ? '✓ ' + tea.infusions + '×' : '1×'}</span>
+                            </div>
+                        </div>
+                        <div class="prep-section">
+                            <div class="prep-title">${t('preparation')}</div>
+                            <p class="prep-text">${tea.prep[lang]}</p>
+                        </div>
                     </div>
                 </div>
             `;
@@ -982,6 +1324,7 @@
             html.dataset.theme = isDark ? 'light' : 'dark';
             btn.textContent = isDark ? '🌙' : '☀️';
             localStorage.setItem('theme', html.dataset.theme);
+            document.querySelector('meta[name="theme-color"]').content = isDark ? '#f8f7f5' : '#0a0a0a';
         }
 
         function toggleLang() {
@@ -1022,7 +1365,6 @@
             const tea = teas[teaIndex];
             
             if (!timerState.isActive) {
-                // Activate timer mode
                 timerState.totalSeconds = parseTime(tea.time);
                 timerState.remainingSeconds = timerState.totalSeconds;
                 timerState.originalTime = tea.time;
@@ -1031,7 +1373,7 @@
                 timerState.currentTeaIndex = teaIndex;
                 
                 row.classList.add('active');
-                row.onclick = null; // Disable click while timer active
+                row.onclick = null;
                 renderTimer();
                 startTimer();
             }
@@ -1039,14 +1381,14 @@
 
         function renderTimer() {
             const row = document.getElementById('steepingSpec');
-            const circumference = 2 * Math.PI * 32; // radius = 32
+            const circumference = 2 * Math.PI * 36;
             
             row.innerHTML = `
                 <div class="timer-content">
                     <div class="timer-circle">
-                        <svg class="timer-svg" viewBox="0 0 80 80">
-                            <circle class="timer-bg" cx="40" cy="40" r="32"></circle>
-                            <circle class="timer-progress" id="timerProgress" cx="40" cy="40" r="32" 
+                        <svg class="timer-svg" viewBox="0 0 88 88">
+                            <circle class="timer-bg" cx="44" cy="44" r="36"></circle>
+                            <circle class="timer-progress" id="timerProgress" cx="44" cy="44" r="36" 
                                     style="stroke-dasharray: ${circumference}; stroke-dashoffset: 0;"></circle>
                         </svg>
                         <div class="timer-display" id="timerDisplay">${formatTime(timerState.remainingSeconds)}</div>
@@ -1070,7 +1412,7 @@
             const display = document.getElementById('timerDisplay');
             const progress = document.getElementById('timerProgress');
             const mainBtn = document.getElementById('timerMainBtn');
-            const circumference = 2 * Math.PI * 32;
+            const circumference = 2 * Math.PI * 36;
             
             if (timerState.isDone) {
                 const row = document.getElementById('steepingSpec');
@@ -1161,7 +1503,6 @@
             const tea = teas[timerState.currentTeaIndex];
             const teaIndex = timerState.currentTeaIndex;
             
-            // Reset to original display
             timerState.isActive = false;
             timerState.isRunning = false;
             timerState.isDone = false;
@@ -1180,7 +1521,6 @@
             row.onclick = () => toggleTimerMode(teaIndex);
         }
 
-        // Clean up timer when modal closes
         const originalCloseDetail = closeDetail;
         closeDetail = function() {
             if (timerState.interval) {
@@ -1197,6 +1537,7 @@
             if (localStorage.getItem('theme') === 'light') {
                 document.documentElement.dataset.theme = 'light';
                 document.getElementById('themeToggle').textContent = '🌙';
+                document.querySelector('meta[name="theme-color"]').content = '#f8f7f5';
             }
             if (localStorage.getItem('lang') === 'en') {
                 lang = 'en';
